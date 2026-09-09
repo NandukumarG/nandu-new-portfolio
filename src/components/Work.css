@@ -1,0 +1,190 @@
+.work {
+  position: relative;
+  color: var(--text-on-dark);
+  padding: 90px 24px 100px;
+  background-color: var(--bg-dark);
+  background-image:
+    linear-gradient(180deg, rgba(10, 18, 13, 0.88) 0%, rgba(10, 18, 13, 0.94) 100%),
+    url('/images/forest-hero.jpg');
+  background-size: cover, cover;
+  background-position: center, 20% center;
+  background-repeat: no-repeat, no-repeat;
+}
+
+.work-corner-label {
+  position: absolute;
+  top: 32px;
+  right: 28px;
+  display: none;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-on-dark-muted);
+}
+
+.work-corner-label-small {
+  position: static;
+  align-items: center;
+  text-align: center;
+}
+
+@media (min-width: 860px) {
+  .work-corner-label {
+    display: flex;
+  }
+}
+
+.section-kicker {
+  max-width: 1180px;
+  margin: 0 auto;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-on-dark-muted);
+}
+
+.section-heading {
+  max-width: 1180px;
+  margin: 10px auto 0;
+  font-size: clamp(30px, 4vw, 46px);
+  font-weight: 700;
+}
+
+.work-eyebrow {
+  max-width: 1180px;
+  margin: 40px auto 0;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-on-dark-muted);
+}
+
+.work-eyebrow-highlight {
+  display: inline-block;
+  width: fit-content;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--accent-lime);
+  color: #0e1509;
+  font-weight: 700;
+}
+
+.work-sites-row {
+  max-width: 1180px;
+  margin: 20px auto 0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.work-sites {
+  flex: 1;
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  touch-action: pan-y;
+  cursor: grab;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+
+.work-sites:active {
+  cursor: grabbing;
+}
+
+.work-sites::-webkit-scrollbar {
+  display: none;
+}
+
+.work-site {
+  flex: 0 0 clamp(240px, 32vw, 300px);
+  scroll-snap-align: start;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--line-on-dark);
+  transition: transform 0.3s var(--ease);
+}
+
+.work-site:hover {
+  transform: translateY(-4px);
+}
+
+.work-site-preview {
+  height: 140px;
+  background-color: #142018;
+  background-image: linear-gradient(135deg, rgba(28, 44, 32, 0.4), rgba(10, 18, 13, 0.7) 70%);
+  background-size: cover;
+  background-position: center;
+}
+
+.work-site-preview.has-photo {
+  background-image:
+    linear-gradient(160deg, rgba(10, 18, 13, 0.25), rgba(10, 18, 13, 0.6)),
+    var(--site-photo);
+}
+
+.work-site-copy {
+  padding: 18px 20px 22px;
+}
+
+.work-site-copy h3 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.work-site-copy p {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--text-on-dark-muted);
+}
+
+.work-site-copy span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.work-sites-side {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.work-sites-next {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--line-on-dark);
+  background: transparent;
+  color: var(--text-on-dark);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.work-sites-next:hover {
+  background: rgba(244, 244, 236, 0.08);
+  transform: translateX(2px);
+}
+
+@media (max-width: 700px) {
+  .work-site {
+    flex-basis: 78vw;
+  }
+}

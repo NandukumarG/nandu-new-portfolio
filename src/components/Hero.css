@@ -1,0 +1,233 @@
+.hero {
+  position: relative;
+  color: var(--text-on-dark);
+  padding: 130px 24px 40px;
+  overflow: hidden;
+  background-color: var(--bg-dark);
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(10, 18, 13, 0.6) 0%,
+      rgba(10, 18, 13, 0.4) 35%,
+      rgba(10, 18, 13, 0.9) 100%
+    ),
+    radial-gradient(ellipse at 62% 42%, transparent 35%, rgba(10, 18, 13, 0.55) 100%),
+    url('/images/forest-hero.jpg');
+  background-size: cover, cover, cover;
+  background-position: center, center, 70% center;
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-attachment: fixed, fixed, fixed;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(244, 244, 236, 0.06) 1px, transparent 1px);
+  background-size: 26px 26px;
+  mask-image: radial-gradient(60% 60% at 70% 20%, black, transparent 80%);
+  pointer-events: none;
+}
+
+.hero-corner-mark {
+  position: absolute;
+  top: 24px;
+  right: 28px;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  z-index: 1;
+}
+
+.hero-corner-line {
+  width: 1px;
+  height: 46px;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(244, 244, 236, 0.3) 0 3px,
+    transparent 3px 7px
+  );
+}
+
+.hero-corner-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent-lime);
+}
+
+@media (min-width: 900px) {
+  .hero-corner-mark {
+    display: flex;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero {
+    background-attachment: scroll, scroll, scroll;
+  }
+}
+
+.hero-inner {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-on-dark-muted);
+  margin-bottom: 18px;
+}
+
+.hero-title {
+  font-size: clamp(38px, 5.4vw, 62px);
+  line-height: 1.05;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-title em {
+  font-style: italic;
+  font-family: var(--accent-serif);
+  color: var(--accent-lime);
+  font-weight: 500;
+}
+
+.hero-sub {
+  margin-top: 22px;
+  max-width: 46ch;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--text-on-dark-muted);
+}
+
+.hero-actions {
+  margin-top: 32px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 14px 24px;
+  border-radius: 999px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-lime {
+  background: var(--accent-lime);
+  color: #0e1509;
+}
+
+.btn-lime:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(215, 242, 77, 0.25);
+}
+
+.btn-ghost {
+  color: var(--text-on-dark);
+  padding: 14px 6px;
+}
+
+.btn-ghost:hover {
+  text-decoration: underline;
+}
+
+.hero-graphic {
+  position: relative;
+}
+
+.hero-meta {
+  position: relative;
+  max-width: 1200px;
+  margin: 90px auto 0;
+  padding-top: 22px;
+  border-top: 1px solid var(--line-on-dark);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+  font-size: 13px;
+  color: var(--text-on-dark-muted);
+}
+
+.hero-scroll {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--line-on-dark);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--text-on-dark);
+  animation: bob 2.4s ease-in-out infinite;
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+.hero-pill,
+.hero-stages {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line-on-dark);
+}
+
+.hero-stages span {
+  padding: 2px 8px;
+}
+
+.hero-stages .is-active {
+  background: var(--accent-lime);
+  color: #0e1509;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.hero-tagline {
+  margin-left: auto;
+}
+
+@media (max-width: 900px) {
+  .hero {
+    padding-top: 110px;
+  }
+  .hero-inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .hero-actions {
+    justify-content: center;
+  }
+  .hero-meta {
+    justify-content: center;
+    text-align: center;
+    margin-top: 50px;
+  }
+  .hero-tagline {
+    margin-left: 0;
+  }
+}

@@ -1,0 +1,232 @@
+.carousel {
+  margin-top: 46px;
+}
+
+.carousel-track {
+  position: relative;
+  height: 460px;
+  perspective: 1600px;
+  touch-action: pan-y;
+  outline: none;
+}
+
+.carousel-card {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: min(420px, 82vw);
+  padding: 22px;
+  border-radius: 20px;
+  background: rgba(244, 244, 236, 0.04);
+  border: 1px solid var(--line-on-dark);
+  backdrop-filter: blur(6px);
+  transition: transform 0.45s var(--ease), opacity 0.45s var(--ease);
+  cursor: pointer;
+  color: var(--text-on-dark);
+}
+
+.carousel-card.is-active {
+  cursor: grab;
+}
+
+.carousel-card-photo {
+  background-image:
+    linear-gradient(180deg, rgba(10, 18, 13, 0.4) 0%, rgba(10, 18, 13, 0.94) 100%),
+    var(--card-photo);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-color: rgba(244, 244, 236, 0.28);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 380px;
+}
+
+.carousel-mock {
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f4f4ec;
+  color: #14170f;
+  margin-bottom: 18px;
+}
+
+.carousel-mock-bar {
+  display: flex;
+  gap: 6px;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(20, 23, 15, 0.08);
+}
+
+.carousel-mock-bar span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(20, 23, 15, 0.15);
+}
+
+.carousel-mock-body {
+  padding: 14px;
+}
+
+.carousel-mock-chart {
+  height: 60px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  background: linear-gradient(100deg, #d7f24a55, #d7f24a11 60%);
+  position: relative;
+  overflow: hidden;
+}
+
+.carousel-mock-chart::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(120deg, transparent 40%, rgba(20, 23, 15, 0.12) 50%, transparent 60%);
+}
+
+.carousel-mock-row {
+  height: 10px;
+  border-radius: 4px;
+  background: rgba(20, 23, 15, 0.08);
+  margin-bottom: 8px;
+}
+
+.carousel-mock-row.short {
+  width: 60%;
+}
+
+.carousel-card h3 {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.carousel-tag {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent-lime);
+  margin-top: 4px;
+}
+
+.carousel-desc {
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--text-on-dark-muted);
+  line-height: 1.5;
+}
+
+.carousel-stack {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 14px 0 0;
+  border-top: 1px solid var(--line-on-dark);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  font-size: 12px;
+}
+
+.carousel-stack li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.carousel-stack-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background: rgba(244, 244, 236, 0.08);
+}
+
+.carousel-stack-icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.carousel-stack em {
+  display: block;
+  font-style: normal;
+  color: var(--text-on-dark-muted);
+  font-size: 10.5px;
+  margin-bottom: 1px;
+}
+
+.carousel-links {
+  margin-top: 16px;
+  display: flex;
+  gap: 16px;
+}
+
+.carousel-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+
+.carousel-links a:hover {
+  border-color: currentColor;
+}
+
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.carousel-controls button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--line-on-dark);
+  background: transparent;
+  color: var(--text-on-dark);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.carousel-controls button:hover {
+  background: rgba(244, 244, 236, 0.08);
+  transform: translateY(-1px);
+}
+
+.carousel-progress {
+  width: 140px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--line-on-dark);
+  overflow: hidden;
+}
+
+.carousel-progress-fill {
+  display: block;
+  height: 100%;
+  background: var(--accent-lime);
+  transition: width 0.35s var(--ease);
+}
+
+.carousel-index {
+  font-size: 12px;
+  color: var(--text-on-dark-muted);
+  min-width: 62px;
+}
+
+@media (max-width: 600px) {
+  .carousel-track {
+    height: 560px;
+  }
+}
