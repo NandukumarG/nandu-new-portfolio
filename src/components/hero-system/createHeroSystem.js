@@ -62,7 +62,7 @@ export function createHeroSystem(host, { onReady, onUnavailable }) {
   const mobile = host.clientWidth < 480
   const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'low-power' })
   renderer.setClearColor(color('bg-dark'), 0)
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mobile ? 1.5 : 2))
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5))
   renderer.outputColorSpace = THREE.SRGBColorSpace
   // Preserve the site's hues instead of washing ivory and lime toward white.
   renderer.toneMapping = THREE.NeutralToneMapping
@@ -88,20 +88,20 @@ export function createHeroSystem(host, { onReady, onUnavailable }) {
   const basic = (token, options = {}) => own(new THREE.MeshBasicMaterial({
     color: color(token), toneMapped: false, ...options,
   }))
-  const ceramic = standard('bg-light')
-  const inset = standard('bg-light-soft', { roughness: 0.72 })
+  const ceramic = standard('bg-dark-soft', { color: new THREE.Color('#394337'), metalness: 0.72, roughness: 0.29, envMapIntensity: 1.4 })
+  const inset = standard('bg-dark-soft', { color: new THREE.Color('#263024'), metalness: 0.65, roughness: 0.38 })
   const forest = standard('bg-dark-soft', { roughness: 0.36, metalness: 0.12,
     emissive: color('bg-dark-soft'), emissiveIntensity: 0.35 })
   const recess = standard('bg-dark', { roughness: 0.5 })
   const pipeMaterial = basic('accent-lime-dim')
   const edge = basic('accent-lime-pale', { transparent: true, opacity: 0.26 })
-  const divider = basic('line-on-light', { transparent: true, opacity: palette['line-on-light'].alpha })
+  const divider = basic('accent-lime-pale', { transparent: true, opacity: 0.09 })
   const darkDivider = basic('line-on-dark', { transparent: true, opacity: palette['line-on-dark'].alpha })
   const glass = own(new THREE.MeshPhysicalMaterial({
     color: color('bg-dark-soft'), attenuationColor: color('bg-dark-soft'),
     attenuationDistance: 0.65, roughness: 0.12, metalness: 0.02,
-    transmission: 0.35, thickness: 0.12, ior: 1.46,
-    transparent: true, opacity: 0.34, depthWrite: false,
+    transmission: 0.55, thickness: 0.18, ior: 1.46,
+    transparent: true, opacity: 0.5, depthWrite: false,
     clearcoat: 0.7, clearcoatRoughness: 0.28, envMapIntensity: 1.3,
   }))
   const sheen = basic('glass', { transparent: true, opacity: palette.glass.alpha, depthWrite: false })
@@ -183,7 +183,7 @@ export function createHeroSystem(host, { onReady, onUnavailable }) {
   }
   let environment = createEnvironment()
   scene.environment = environment.texture
-  scene.environmentIntensity = 0.35
+  scene.environmentIntensity = 0.8
 
   scene.add(new THREE.HemisphereLight(color('bg-light'), color('bg-dark-soft'), 0.9))
   const key = new THREE.DirectionalLight(color('bg-light-soft'), 1.8)
@@ -198,7 +198,7 @@ export function createHeroSystem(host, { onReady, onUnavailable }) {
   const fill = new THREE.DirectionalLight(color('bg-light'), 0.65)
   fill.position.set(6, 3, 4)
   scene.add(fill)
-  const rim = new THREE.DirectionalLight(color('accent-lime-pale'), 0.65)
+  const rim = new THREE.DirectionalLight(color('accent-lime-pale'), 2.2)
   rim.position.set(1, 5, -5)
   scene.add(rim)
 
@@ -241,26 +241,26 @@ export function createHeroSystem(host, { onReady, onUnavailable }) {
   box([2.98, 2.34, 0.12], [0, 2.09, 0.12], ceramic, monitor, 0.045)
   box([2.7, 2.05, 0.035], [0, 2.1, 0.19], inset, monitor, 0.018)
   const dashboard = textureCanvas(960, 720, (ctx, w, h) => {
-    ctx.fillStyle = css('bg-light'); ctx.fillRect(0, 0, w, h)
-    ctx.fillStyle = css('bg-light-soft'); ctx.fillRect(0, 0, 224, h)
-    ctx.fillStyle = css('text-on-light'); ctx.font = '600 28px sans-serif'; ctx.fillText('Project', 30, 63)
+    ctx.fillStyle = '#141d15'; ctx.fillRect(0, 0, w, h)
+    ctx.fillStyle = '#1d281d'; ctx.fillRect(0, 0, 224, h)
+    ctx.fillStyle = css('text-on-dark'); ctx.font = '600 28px sans-serif'; ctx.fillText('Workspace', 22, 63)
     const rows = ['Overview', 'Requests', 'Services', 'Settings']
     rows.forEach((text, i) => {
-      if (!i) { ctx.fillStyle = css('accent-lime-pale'); ctx.fillRect(16, 110, 191, 54) }
-      ctx.fillStyle = css('text-on-light-muted'); ctx.font = '21px sans-serif'
+      if (!i) { ctx.fillStyle = '#35462a'; ctx.fillRect(16, 110, 191, 54) }
+      ctx.fillStyle = '#a8b99a'; ctx.font = '21px sans-serif'
       ctx.fillText(text, 60, 145 + i * 70)
-      ctx.strokeStyle = css('text-on-light-muted'); ctx.strokeRect(31, 128 + i * 70, 13, 16)
+      ctx.strokeStyle = '#91a77c'; ctx.strokeRect(31, 128 + i * 70, 13, 16)
     })
-    ctx.fillStyle = css('text-on-light'); ctx.font = '600 27px sans-serif'; ctx.fillText('System overview', 268, 70)
-    ctx.fillStyle = css('text-on-light-muted'); ctx.font = '18px sans-serif'; ctx.fillText('Requests processed', 270, 108)
-    ctx.fillStyle = css('bg-light-soft'); ctx.fillRect(268, 145, 642, 331)
-    ctx.strokeStyle = css('line-on-light'); ctx.lineWidth = 1
+    ctx.fillStyle = css('text-on-dark'); ctx.font = '600 27px sans-serif'; ctx.fillText('System overview', 268, 70)
+    ctx.fillStyle = '#91a77c'; ctx.font = '18px sans-serif'; ctx.fillText('Requests processed', 270, 108)
+    ctx.fillStyle = '#1d2a1c'; ctx.fillRect(268, 145, 642, 331)
+    ctx.strokeStyle = '#37452e'; ctx.lineWidth = 1
     for (let y = 194; y < 460; y += 64) { ctx.beginPath(); ctx.moveTo(290, y); ctx.lineTo(886, y); ctx.stroke() }
     const chart = new Path2D('M 290 428 C 338 423 327 345 375 354 C 422 363 412 409 454 371 C 496 334 497 247 537 267 C 586 293 575 347 623 306 C 667 270 663 176 706 203 C 750 231 749 289 790 235 C 832 173 855 164 884 172')
     const area = new Path2D(chart); area.lineTo(884, 450); area.lineTo(290, 450); area.closePath()
-    ctx.fillStyle = css('accent-lime-pale'); ctx.fill(area)
+    ctx.fillStyle = '#364e27'; ctx.fill(area)
     ctx.strokeStyle = css('accent-lime'); ctx.lineWidth = 7; ctx.stroke(chart)
-    for (let i = 0; i < 3; i++) { ctx.fillStyle = css('bg-light-soft'); ctx.fillRect(270 + i * 217, 505, 190, 48) }
+    for (let i = 0; i < 3; i++) { ctx.fillStyle = '#24331e'; ctx.fillRect(270 + i * 217, 505, 190, 48) }
     ctx.fillStyle = css('accent-lime'); ctx.beginPath(); ctx.roundRect(427, 598, 306, 65, 10); ctx.fill()
     ctx.fillStyle = css('text-on-light'); ctx.font = '600 22px sans-serif'; ctx.fillText('View activity', 514, 639)
   })
@@ -370,7 +370,7 @@ export function createHeroSystem(host, { onReady, onUnavailable }) {
   shape.bezierCurveTo(0.43, 1.49, 0.95, 1.12, 0.91, 0.71)
   shape.bezierCurveTo(1.42, 0.59, 1.39, 0.02, 0.93, 0)
   shape.lineTo(-0.92, 0)
-  const cloudMaterial = standard('bg-light', { roughness: 0.58, emissive: color('accent-lime-pale'), emissiveIntensity: 0 })
+  const cloudMaterial = standard('bg-dark-soft', { color: new THREE.Color('#89987c'), metalness: 0.72, roughness: 0.22, envMapIntensity: 1.5, emissive: color('accent-lime-pale'), emissiveIntensity: 0 })
   mesh(new THREE.ExtrudeGeometry(shape, {
     depth: 0.31, steps: 1, bevelEnabled: true, bevelSegments: 6,
     bevelSize: 0.14, bevelThickness: 0.15, curveSegments: mobile ? 16 : 24,
@@ -474,6 +474,11 @@ export function createHeroSystem(host, { onReady, onUnavailable }) {
   function tick(now) {
     frame = 0
     if (!active || reduced || lost || disposed) return
+    // Decorative motion needs at most 30 fps; leave GPU time for the page.
+    if (previous && now - previous < 1000 / 30) {
+      frame = requestAnimationFrame(tick)
+      return
+    }
     if (previous) elapsed += Math.min((now - previous) / 1000, 0.1)
     previous = now
     render()

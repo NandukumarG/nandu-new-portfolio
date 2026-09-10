@@ -1,53 +1,25 @@
-import { useEffect, useRef, useState } from 'react'
 import './Hero3D.css'
 
-/** Decorative, fixed-camera system model. Rendering loads separately from the page. */
+/**
+ * High-fidelity isometric software system model in dark metal and forest glass.
+ * Displays the exact system architecture with responsive scaling and ambient glow.
+ */
 export default function Hero3D() {
-  const host = useRef(null)
-  const [ready, setReady] = useState(false)
-
-  useEffect(() => {
-    const element = host.current
-    const motion = window.matchMedia('(prefers-reduced-motion: reduce)')
-    let disposed = false
-    let scene
-    let visible = false
-    const sync = () => scene?.setActivity(visible && !document.hidden, motion.matches)
-    const observer = new IntersectionObserver(([entry]) => {
-      visible = entry.isIntersecting
-      sync()
-    }, { threshold: 0 })
-    observer.observe(element)
-    document.addEventListener('visibilitychange', sync)
-    motion.addEventListener('change', sync)
-
-    import('./hero-system/createHeroSystem.js').then(({ createHeroSystem }) => {
-      if (disposed) return
-      scene = createHeroSystem(element, {
-        onReady: () => { if (!disposed) setReady(true) },
-        onUnavailable: () => { if (!disposed) setReady(false) },
-      })
-      sync()
-    }).catch(() => { if (!disposed) setReady(false) })
-
-    return () => {
-      disposed = true
-      observer.disconnect()
-      document.removeEventListener('visibilitychange', sync)
-      motion.removeEventListener('change', sync)
-      scene?.dispose()
-    }
-  }, [])
-
   return (
     <div className="stack3d-wrap">
       <div
-        ref={host}
-        className={`hero-system${ready ? ' is-ready' : ''}`}
+        className="hero-system is-ready"
         role="img"
-        aria-label="An ivory and forest-glass miniature software system: a dashboard monitor connects through a gateway and API tower to a database, three servers, and a deployment cloud. Lime signals follow the connecting pipes."
+        aria-label="An isometric software system in dark metal and forest glass: a monitor connects through an API tower to a database, servers, and a deployment cloud with glowing lime conduits."
       >
-        <img className="hero-system-preview" src="/images/hero-system-preview.png" alt="" aria-hidden="true" fetchPriority="high" />
+        <div className="hero-system-glow" aria-hidden="true" />
+        <img
+          className="hero-system-exact"
+          src="/images/hero-system-exact.png"
+          alt="Isometric system architecture model: Frontend web apps monitor, API backend servers, Deploy Anywhere cloud with AWS and Kubernetes, database, and container orchestration."
+          fetchPriority="high"
+          loading="eager"
+        />
       </div>
     </div>
   )

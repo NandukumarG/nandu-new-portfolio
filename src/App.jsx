@@ -1,23 +1,5 @@
-import Connect from './components/Connect'
-import Hero from './components/Hero'
-import Nav from './components/Nav'
-import Profile from './components/Profile'
-import Tools from './components/Tools'
-import Work from './components/Work'
+import Portfolio from "./Portfolio";
 
-function App() {
-  return (
-    <>
-      <Nav />
-      <main>
-        <Hero />
-        <Profile />
-        <Tools />
-        <Work />
-        <Connect />
-      </main>
-    </>
-  )
+export default function App() {
+  return <Portfolio />;
 }
-
-export default App
