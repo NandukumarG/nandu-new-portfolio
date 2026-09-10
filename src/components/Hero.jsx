@@ -1,4 +1,4 @@
-import { ArrowDownRight, ArrowUpRight, ChevronDown, Move } from 'lucide-react'
+import { ArrowDownRight, ArrowUpRight, ChevronDown } from 'lucide-react'
 import Hero3D from './Hero3D'
 import Reveal from './Reveal'
 import './Hero.css'
@@ -43,14 +43,6 @@ export default function Hero() {
         <a className="hero-scroll" href="#profile" aria-label="Scroll to profile">
           <ChevronDown size={16} />
         </a>
-        <span className="hero-pill">
-          Drag to explore <Move size={13} aria-hidden="true" />
-        </span>
-        <span className="hero-stages">
-          <span>Build</span>
-          <span>Connect</span>
-          <span className="is-active">Deploy</span>
-        </span>
         <span className="hero-meta-item hero-tagline">
           Systems for a brighter tomorrow.
         </span>
