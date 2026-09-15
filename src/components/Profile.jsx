@@ -1,45 +1,17 @@
-import { Pencil, RefreshCw, Settings } from 'lucide-react'
-import Reveal from './Reveal'
-import './Profile.css'
-
-const FEATURES = [
-  { Icon: Pencil, label: 'Discover together' },
-  { Icon: Settings, label: 'Build end to end' },
-  { Icon: RefreshCw, label: 'Deploy & iterate' },
-]
-
+import { ArrowUpRight } from 'lucide-react';
+import Reveal from './Reveal';
+import { capabilities } from '../data/portfolio';
+import './Profile.css';
 export default function Profile() {
-  return (
-    <section id="profile" className="profile">
-      <div className="profile-inner">
-        <Reveal className="profile-mark" as="div">
-          <span>NK</span>
-        </Reveal>
-
-        <div className="profile-content">
-          <Reveal as="h2" className="profile-heading">
-            Close to the people.
-            <br />
-            Deep in the engineering.
-          </Reveal>
-
-          <Reveal as="p" className="profile-copy" delay={100}>
-            I turn real workflows into useful products, connecting customer needs
-            with interfaces, APIs, databases and dependable deployments.
-          </Reveal>
-        </div>
+  return <section id="about" className="section about-section">
+    <div className="container">
+      <Reveal className="eyebrow section-label"><span className="section-number">01 /</span> ABOUT ME</Reveal>
+      <div className="about-grid">
+        <Reveal className="about-copy"><h2>I turn ideas<br />into <em>real solutions.</em></h2><p>I’m Nandu, a full stack developer who connects real needs with useful products. I bring interfaces, APIs, databases, and dependable deployments together — with people at the center.</p><a className="text-button" href="#work">Get to know my work <ArrowUpRight size={15} /></a></Reveal>
+        <div className="about-capabilities">{capabilities.map(({ Icon, title, copy }, i) => <Reveal key={title} delay={i * 70} className="capability-card"><span className="capability-icon glass"><Icon size={23} strokeWidth={1.3} /></span><h3>{title}</h3><p>{copy}</p></Reveal>)}</div>
       </div>
-
-      <Reveal as="div" className="profile-features" delay={150}>
-        {FEATURES.map(({ Icon, label }) => (
-          <span className="profile-feature" key={label}>
-            <span className="profile-feature-icon" aria-hidden="true">
-              <Icon size={15} />
-            </span>
-            {label}
-          </span>
-        ))}
-      </Reveal>
-    </section>
-  )
+      <div className="about-bottom"><span>CURIOUS BY NATURE. AN ENGINEER BY PRACTICE.</span><span>Better software for a brighter tomorrow. <i>↗</i></span></div>
+    </div>
+    <svg className="about-wave" viewBox="0 0 1400 130" preserveAspectRatio="none" aria-hidden="true">{[0,1,2,3,4,5].map(i => <path key={i} d={`M0 ${120+i*3} C400 ${150-i*2} 620 ${-60+i*12} 950 ${90+i*7} S1280 85 1400 ${20+i*10}`} />)}</svg>
+  </section>;
 }

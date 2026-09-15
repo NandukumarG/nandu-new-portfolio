@@ -1,58 +1,25 @@
-import { ArrowUpRight } from 'lucide-react'
-import Reveal from './Reveal'
-import './Connect.css'
-
-const RING_TEXT = 'SAY HELLO • SAY HELLO • SAY HELLO • SAY HELLO • '
-
-export default function Connect() {
-  return (
-    <section id="connect" className="connect">
-      <div className="connect-inner">
-        <Reveal as="div" className="connect-copy">
-          <p className="section-kicker connect-kicker">03 / Connect</p>
-          <h2 className="connect-heading">
-            Let&rsquo;s build
-            <br />
-            something that matters.
-          </h2>
-          <p className="connect-sub">Bring the problem. We&rsquo;ll find the next step.</p>
-        </Reveal>
-
-        <Reveal as="div" className="connect-button-wrap" delay={120}>
-          <a className="connect-button" href="mailto:hello@example.com" aria-label="Start a conversation">
-            <svg className="connect-ring" viewBox="0 0 200 200" aria-hidden="true">
-              <defs>
-                <path id="connect-ring-path" d="M100,100 m-84,0 a84,84 0 1,1 168,0 a84,84 0 1,1 -168,0" />
-              </defs>
-              <text fontSize="11.5" letterSpacing="3" fill="#0e1509">
-                <textPath href="#connect-ring-path">{RING_TEXT}</textPath>
-              </text>
-            </svg>
-            <span className="connect-button-center">
-              <ArrowUpRight size={20} aria-hidden="true" />
-              Start a conversation
-            </span>
-          </a>
-        </Reveal>
-
-        <Reveal as="div" className="connect-links" delay={200}>
-          <a href="mailto:hello@example.com">
-            Email <ArrowUpRight size={15} aria-hidden="true" />
-          </a>
-          <a href="https://linkedin.com" target="_blank" rel="noreferrer">
-            LinkedIn <ArrowUpRight size={15} aria-hidden="true" />
-          </a>
-          <a href="https://github.com" target="_blank" rel="noreferrer">
-            GitHub <ArrowUpRight size={15} aria-hidden="true" />
-          </a>
+import { ArrowUpRight, ArrowRight, MessageSquare, MapPin, Code2 } from 'lucide-react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import Reveal from './Reveal';
+import { socialLinks } from '../data/portfolio';
+import './Connect.css';
+const EarthVisualization = lazy(() => import('./EarthVisualization'));
+export default function Connect({ onContact, motionPaused }) {
+  const host = useRef(null);
+  const [loadEarth, setLoadEarth] = useState(false);
+  useEffect(() => { const observer = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setLoadEarth(true); observer.disconnect(); } }, { rootMargin: '250px' }); observer.observe(host.current); return () => observer.disconnect(); }, []);
+  return <section id="connect" className="section contact-section">
+    <div className="container"><Reveal className="eyebrow section-label"><span className="section-number">05 /</span> LET’S CONNECT</Reveal>
+      <div className="contact-layout">
+        <Reveal className="contact-copy"><h2>Let’s build<br />something{' '}<br /><em>that matters.</em></h2><p>Have a project in mind?<br />I’d love to hear about it.</p><button className="button button-lime" onClick={onContact}>Start a conversation <ArrowRight /></button><span className="contact-location"><MapPin size={11} /> BASED IN INDIA. OPEN TO THE WORLD.</span></Reveal>
+        <div className="earth-host" ref={host} role="img" aria-label="Slowly rotating Earth with green continents, network nodes, and orbital connections">
+          <Suspense fallback={<div className="earth-fallback" />}>{loadEarth ? <EarthVisualization paused={motionPaused} /> : <div className="earth-fallback" />}</Suspense>
+          <span className="earth-caption">Global ideas.<br /><em>Real solutions.</em></span>
+        </div>
+        <Reveal className="contact-panel glass"><div className="contact-panel-heading"><h3>Get in touch</h3><ArrowUpRight size={17} /></div><p>Good things start with a conversation.</p>
+          {socialLinks.length ? <div className="contact-links">{socialLinks.map(({ Icon, label, value, href }) => <a className="contact-link" href={href} key={label} target={href.startsWith('https:') ? '_blank' : undefined} rel={href.startsWith('https:') ? 'noreferrer' : undefined}><span className="contact-link-icon"><Icon size={17} /></span><span><strong>{label}</strong><small>{value}</small></span><ArrowUpRight size={13} /></a>)}</div> : <div className="contact-invitation"><span className="invitation-icon"><MessageSquare size={25} strokeWidth={1.2} /></span><h4>Every great product<br />starts with an idea.</h4><p>Tell me what you’re imagining.<br />Let’s find a useful next step.</p><button className="contact-link" onClick={onContact}><span className="contact-link-icon"><Code2 size={17} /></span><span><strong>Your next project</strong><small>Put your idea into words</small></span><ArrowUpRight size={15} /></button></div>}
         </Reveal>
       </div>
-
-      <footer className="connect-footer">
-        <span className="footer-mark">NK.</span>
-        <span className="footer-tagline">From real needs to working systems.</span>
-        <span className="footer-words">People / Solve / Build / Together</span>
-      </footer>
-    </section>
-  )
+    </div>
+  </section>;
 }

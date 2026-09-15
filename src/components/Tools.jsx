@@ -1,122 +1,17 @@
-import { useCallback, useRef } from 'react'
-import Reveal from './Reveal'
-import {
-  AwsIcon,
-  DockerIcon,
-  FastApiIcon,
-  GitIcon,
-  GithubIcon,
-  KubernetesIcon,
-  MongoIcon,
-  NginxIcon,
-  PostgresIcon,
-  PostmanIcon,
-  PythonIcon,
-  ReactIcon,
-  TailwindIcon,
-  TypeScriptIcon,
-  ViteIcon,
-  VsCodeIcon,
-} from './icons'
-import './Tools.css'
-
-const GROUPS = [
-  {
-    title: 'Frontend',
-    items: [
-      { Icon: ReactIcon, label: 'React' },
-      { Icon: TypeScriptIcon, label: 'TypeScript' },
-      { Icon: ViteIcon, label: 'Vite' },
-      { Icon: TailwindIcon, label: 'Tailwind CSS' },
-    ],
-  },
-  {
-    title: 'Backend + Data',
-    items: [
-      { Icon: PythonIcon, label: 'Python' },
-      { Icon: FastApiIcon, label: 'FastAPI' },
-      { Icon: PostgresIcon, label: 'PostgreSQL' },
-      { Icon: MongoIcon, label: 'MongoDB' },
-    ],
-  },
-  {
-    title: 'Deployment',
-    items: [
-      { Icon: AwsIcon, label: 'AWS' },
-      { Icon: DockerIcon, label: 'Docker' },
-      { Icon: KubernetesIcon, label: 'Kubernetes' },
-      { Icon: NginxIcon, label: 'Nginx' },
-    ],
-  },
-  {
-    title: 'Tools',
-    items: [
-      { Icon: VsCodeIcon, label: 'VS Code' },
-      { Icon: GitIcon, label: 'Git' },
-      { Icon: GithubIcon, label: 'GitHub' },
-      { Icon: PostmanIcon, label: 'Postman' },
-    ],
-  },
-]
-
-const STAGES = ['Discover', 'Prototype', 'Integrate', 'Deploy', 'Iterate']
-
+import { Code2, ArrowUpRight } from 'lucide-react';
+import Reveal from './Reveal';
+import { technologies } from '../data/portfolio';
+import './Tools.css';
 export default function Tools() {
-  const gridRef = useRef(null)
-
-  const handlePointerMove = useCallback((event) => {
-    const grid = gridRef.current
-    if (!grid) return
-    const rect = grid.getBoundingClientRect()
-    const px = (event.clientX - rect.left) / rect.width - 0.5
-    const py = (event.clientY - rect.top) / rect.height - 0.5
-    grid.style.setProperty('--tilt-x', `${(-py * 4).toFixed(2)}deg`)
-    grid.style.setProperty('--tilt-y', `${(px * 4).toFixed(2)}deg`)
-  }, [])
-
-  const handlePointerLeave = useCallback(() => {
-    const grid = gridRef.current
-    if (!grid) return
-    grid.style.setProperty('--tilt-x', '0deg')
-    grid.style.setProperty('--tilt-y', '0deg')
-  }, [])
-
-  return (
-    <section id="stack" className="tools">
-      <Reveal as="h2" className="tools-heading">
-        The tools behind the work.
-      </Reveal>
-
-      <div
-        className="tools-grid"
-        ref={gridRef}
-        onPointerMove={handlePointerMove}
-        onPointerLeave={handlePointerLeave}
-      >
-        {GROUPS.map((group, index) => (
-          <Reveal as="div" className="tools-group" key={group.title} delay={index * 80}>
-            <h3>{group.title}</h3>
-            <ul>
-              {group.items.map(({ Icon, label }) => (
-                <li key={label}>
-                  <span className="tools-icon">
-                    <Icon />
-                  </span>
-                  {label}
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-        ))}
+  return <section id="stack" className="section stack-section">
+    <div className="container">
+      <Reveal className="section-topline section-label"><p className="eyebrow"><span className="section-number">02 /</span> TECH STACK</p><span className="section-aside">MODERN TOOLS. REAL POSSIBILITIES.</span></Reveal>
+      <Reveal><h2>Technologies<br /><em>I work with.</em></h2></Reveal>
+      <div className="stack-layout">
+        <div className="tech-groups">{technologies.map(({ title, items }, i) => <Reveal className={`tech-category tech-category-${i}`} delay={i * 50} key={title}><h3><span>0{i + 1}</span>{title}</h3><ul>{items.map(([Icon, label]) => <li className="tech-item glass" key={label}><span aria-hidden="true"><Icon /></span>{label}</li>)}</ul></Reveal>)}</div>
+        <Reveal className="developer-profile"><img src="/images/developer-workstation.webp" width="900" height="675" alt="Illustration of an anonymous developer viewed from behind, working at softly lit monitors" loading="lazy" /><div className="developer-caption"><span className="developer-label glass"><Code2 size={13} /> FROM CODE TO CLOUD</span><p>One connected workflow.<br /><span>Every layer, considered.</span></p></div></Reveal>
       </div>
-
-      <div className="tools-marquee" aria-hidden="true">
-        <div className="tools-marquee-track">
-          {[...STAGES, ...STAGES].map((stage, i) => (
-            <span key={`${stage}-${i}`}>{stage}</span>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
+      <div className="stack-footnote"><span>THE RIGHT TOOL FOR THE RIGHT PROBLEM.</span><a href="#systems">See the systems behind the work <ArrowUpRight size={13} /></a></div>
+    </div>
+  </section>;
 }

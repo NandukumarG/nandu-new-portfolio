@@ -1,193 +1,47 @@
-import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react'
-import { useCallback, useRef, useState } from 'react'
-import {
-  DockerIcon,
-  FastApiIcon,
-  MongoIcon,
-  PostgresIcon,
-  ReactIcon,
-} from './icons'
-import './Carousel.css'
-
-const PROJECTS = [
-  {
-    type: 'mockup',
-    title: 'Operations Workspace',
-    tag: 'FieldOps',
-    description: 'A unified workspace for people, data and action.',
-    stack: [
-      { label: 'Frontend', value: 'React', Icon: ReactIcon },
-      { label: 'Backend', value: 'FastAPI', Icon: FastApiIcon },
-      { label: 'Database', value: 'PostgreSQL', Icon: PostgresIcon },
-      { label: 'Deployment', value: 'Docker + AWS', Icon: DockerIcon },
-    ],
-  },
-  {
-    type: 'photo',
-    image: '/images/forest-fieldops.jpg',
-    title: 'FieldOps',
-    tag: 'Sample project',
-    description: 'Coordinate people, resources and progress from one board.',
-    stack: [
-      { label: 'Frontend', value: 'React', Icon: ReactIcon },
-      { label: 'Database', value: 'MongoDB', Icon: MongoIcon },
-    ],
-  },
-  {
-    type: 'photo',
-    image: '/images/lake-civicmaps.jpg',
-    title: 'CivicMaps',
-    tag: 'Sample project',
-    description: 'Data for stronger communities.',
-    stack: [
-      { label: 'Frontend', value: 'React', Icon: ReactIcon },
-      { label: 'Backend', value: 'FastAPI', Icon: FastApiIcon },
-    ],
-  },
-]
-
-const SWIPE_THRESHOLD = 60
-
-export default function Carousel() {
-  const [active, setActive] = useState(0)
-  const [dragOffset, setDragOffset] = useState(0)
-  const drag = useRef(null)
-
-  const goTo = useCallback((next) => {
-    setActive((PROJECTS.length + next) % PROJECTS.length)
-  }, [])
-
-  const onPointerDown = useCallback((event) => {
-    drag.current = { startX: event.clientX, dragging: true }
-    event.currentTarget.setPointerCapture?.(event.pointerId)
-  }, [])
-
-  const onPointerMove = useCallback((event) => {
-    if (!drag.current?.dragging) return
-    setDragOffset(event.clientX - drag.current.startX)
-  }, [])
-
-  const endDrag = useCallback(() => {
-    if (!drag.current?.dragging) return
-    if (dragOffset > SWIPE_THRESHOLD) goTo(active - 1)
-    else if (dragOffset < -SWIPE_THRESHOLD) goTo(active + 1)
-    drag.current = null
-    setDragOffset(0)
-  }, [dragOffset, active, goTo])
-
-  const onKeyDown = useCallback(
-    (event) => {
-      if (event.key === 'ArrowLeft') goTo(active - 1)
-      if (event.key === 'ArrowRight') goTo(active + 1)
-    },
-    [active, goTo],
-  )
-
-  return (
-    <div className="carousel">
-      <div
-        className="carousel-track"
-        tabIndex={0}
-        role="group"
-        aria-label="Selected work carousel"
-        onKeyDown={onKeyDown}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={endDrag}
-        onPointerLeave={endDrag}
-      >
-        {PROJECTS.map((project, index) => {
-          let offset = index - active
-          if (offset > PROJECTS.length / 2) offset -= PROJECTS.length
-          if (offset < -PROJECTS.length / 2) offset += PROJECTS.length
-          const isActive = offset === 0
-          const dragDeg = isActive ? dragOffset * 0.04 : 0
-
-          return (
-            <article
-              key={project.title}
-              className={`carousel-card${isActive ? ' is-active' : ''}${
-                project.type === 'photo' ? ' carousel-card-photo' : ''
-              }`}
-              style={{
-                '--offset': offset,
-                '--card-photo': project.type === 'photo' ? `url(${project.image})` : undefined,
-                transform: `translateX(calc(-50% + var(--offset) * 300px + ${
-                  isActive ? dragOffset : 0
-                }px)) translateZ(calc(var(--offset) * -1 * 80px)) rotateY(calc(var(--offset) * -22deg + ${dragDeg}deg)) scale(${
-                  1 - Math.min(Math.abs(offset), 2) * 0.14
-                })`,
-                opacity: Math.abs(offset) > 2 ? 0 : 1 - Math.abs(offset) * 0.32,
-                zIndex: 10 - Math.abs(offset),
-              }}
-              aria-hidden={!isActive}
-              onClick={() => !isActive && goTo(index)}
-            >
-              {project.type === 'mockup' && (
-                <div className="carousel-mock">
-                  <div className="carousel-mock-bar">
-                    <span />
-                    <span />
-                    <span />
-                  </div>
-                  <div className="carousel-mock-body">
-                    <div className="carousel-mock-chart" />
-                    <div className="carousel-mock-row" />
-                    <div className="carousel-mock-row short" />
-                  </div>
-                </div>
-              )}
-
-              <div className="carousel-card-body">
-                <h3>{project.title}</h3>
-                <p className="carousel-tag">{project.tag}</p>
-                <p className="carousel-desc">{project.description}</p>
-
-                <ul className="carousel-stack">
-                  {project.stack.map((item) => (
-                    <li key={item.label}>
-                      <span className="carousel-stack-icon">
-                        <item.Icon />
-                      </span>
-                      <span>
-                        <em>{item.label}</em>
-                        {item.value}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="carousel-links">
-                  <a href="#work">
-                    Explore project <ArrowUpRight size={13} aria-hidden="true" />
-                  </a>
-                  <a href="#work">
-                    GitHub <ArrowUpRight size={13} aria-hidden="true" />
-                  </a>
-                </div>
-              </div>
-            </article>
-          )
-        })}
-      </div>
-
-      <div className="carousel-controls">
-        <button type="button" onClick={() => goTo(active - 1)} aria-label="Previous project">
-          <ChevronLeft size={18} />
-        </button>
-        <div className="carousel-progress">
-          <span
-            className="carousel-progress-fill"
-            style={{ width: `${((active + 1) / PROJECTS.length) * 100}%` }}
-          />
-        </div>
-        <span className="carousel-index">
-          {String(active + 1).padStart(2, '0')} / {String(PROJECTS.length).padStart(2, '0')}
-        </span>
-        <button type="button" onClick={() => goTo(active + 1)} aria-label="Next project">
-          <ChevronRight size={18} />
-        </button>
-      </div>
+import { ArrowUpRight, ArrowLeft, ArrowRight } from 'lucide-react';
+import { useRef, useState } from 'react';
+import ProjectPreview from './ProjectPreview';
+import './Carousel.css';
+export default function Carousel({ projects, onProject }) {
+  const [active, setActive] = useState(0);
+  const track = useRef(null);
+  const drag = useRef(null);
+  const dragged = useRef(false);
+  const count = projects.length;
+  const go = n => setActive((n + count) % count);
+  const reset = () => { drag.current = null; track.current?.style.setProperty('--drag', '0px'); track.current?.style.setProperty('--tilt', '0deg'); };
+  const endDrag = e => {
+    if (!drag.current) return;
+    const dx = e.clientX - drag.current.x;
+    const dy = e.clientY - drag.current.y;
+    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) { go(active + (dx < 0 ? 1 : -1)); dragged.current = true; }
+    reset();
+  };
+  return <div className="carousel" role="region" aria-roledescription="carousel" aria-label="Frontend project concepts">
+    <div className="carousel-track" ref={track} tabIndex={0} aria-label="Use left and right arrow keys to browse projects"
+      onKeyDown={e => { if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { e.preventDefault(); go(active + (e.key === 'ArrowRight' ? 1 : -1)); } if (e.key === 'Home') { e.preventDefault(); go(0); } if (e.key === 'End') { e.preventDefault(); go(count - 1); } }}
+      onPointerDown={e => { dragged.current = false; if (e.button !== 0 || e.target.closest('button,a')) return; drag.current = { x: e.clientX, y: e.clientY }; e.currentTarget.setPointerCapture(e.pointerId); }}
+      onPointerMove={e => { if (drag.current) { const dx = e.clientX - drag.current.x; if (Math.abs(dx) > 6) dragged.current = true; e.currentTarget.style.setProperty('--drag', `${Math.max(-85, Math.min(85, dx * .45))}px`); } else if (e.pointerType === 'mouse' && !matchMedia('(prefers-reduced-motion: reduce)').matches) { const r = e.currentTarget.getBoundingClientRect(); e.currentTarget.style.setProperty('--tilt', `${((e.clientX-r.left)/r.width-.5)*3}deg`); } }}
+      onPointerUp={endDrag} onPointerCancel={reset} onLostPointerCapture={reset} onPointerLeave={() => { if (!drag.current) track.current?.style.setProperty('--tilt', '0deg'); }}
+      onClickCapture={e => { if (dragged.current) { e.preventDefault(); e.stopPropagation(); dragged.current = false; } }}>
+      {projects.map((project, i) => {
+        let offset = i - active;
+        if (offset > count / 2) offset -= count;
+        if (offset < -count / 2) offset += count;
+        const center = offset === 0;
+        const distance = Math.abs(offset);
+        return <article key={project.id} className={`carousel-card glass${center ? ' is-active' : ''}`} role="group" aria-roledescription="slide" aria-label={`${i+1} of ${count}: ${project.name}`} aria-hidden={!center} inert={!center ? true : undefined}
+          style={{ '--offset': offset, '--depth': `${-distance * 150}px`, '--rotation': `${offset * -17}deg`, '--scale': 1 - Math.min(distance, 2) * .1, opacity: distance > 1 ? 0 : 1 - distance * .46, zIndex: 10 - distance, visibility: distance > 1 ? 'hidden' : 'visible' }}>
+          <ProjectPreview project={project} />
+          <div className="carousel-card-body"><div className="project-meta"><span>{project.category}</span><span>CONCEPT / 0{i+1}</span></div><div className="project-title-row"><h3>{project.name}</h3><button className="icon-button" onClick={() => onProject(project)} aria-label={`Explore ${project.name} concept`}><ArrowUpRight size={18} /></button></div><p>{project.description}</p><div className="project-card-bottom"><div className="project-tags">{project.tags.map(t => <span key={t}>{t}</span>)}</div><button className="text-button" onClick={() => onProject(project)}>View concept <ArrowUpRight size={13} /></button></div></div>
+        </article>;
+      })}
     </div>
-  )
+    <div className="carousel-controls">
+      <button className="icon-button" aria-label="Previous project" onClick={() => go(active - 1)} disabled={count < 2}><ArrowLeft size={17} /></button>
+      <div className="carousel-dots" aria-label="Choose a project">{projects.map((p,i) => <button key={p.id} className={i === active ? 'active' : ''} aria-label={`Show ${p.name}`} aria-current={i === active ? 'true' : undefined} onClick={() => go(i)}><span /></button>)}</div>
+      <span className="carousel-index" aria-live="polite" aria-atomic="true">{String(active+1).padStart(2,'0')} <span>/ {String(count).padStart(2,'0')}</span><span className="sr-only"> — {projects[active].name}</span></span>
+      <button className="icon-button" aria-label="Next project" onClick={() => go(active + 1)} disabled={count < 2}><ArrowRight size={17} /></button>
+    </div>
+  </div>;
 }

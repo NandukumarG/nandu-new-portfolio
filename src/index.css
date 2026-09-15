@@ -1,140 +1,128 @@
-﻿:root {
-  font-family: "DM Sans", Arial, sans-serif;
-  color: #eaece4;
-  background: #101410;
+:root {
+  font-family: 'DM Sans',Arial,sans-serif;
+  color: #f3f5f2;
+  background: #020604;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color-scheme: dark;
-  --accent: #ceef80;
-  --muted: #969e93;
-  --line: rgba(209, 230, 196, 0.13);
-  --serif: "Instrument Serif", Georgia, serif;
-  --bg-dark: #101410;
-  --bg-dark-soft: #18251b;
-  --bg-light: #e5e9da;
-  --bg-light-soft: #c8d3c0;
-  --accent-lime: #ceef80;
-  --accent-lime-pale: #dcecbf;
-  --accent-lime-dim: #8fa959;
-  --text-on-dark: #f1f3e9;
-  --text-on-dark-muted: rgba(241, 243, 233, 0.65);
-  --text-on-light: #202d20;
-  --text-on-light-muted: rgba(20, 24, 26, 0.6);
-  --line-on-dark: rgba(224, 243, 218, 0.15);
-  --line-on-light: rgba(20, 24, 26, 0.15);
-  --glass: rgba(225, 246, 204, 0.08);
+  --accent: #b6ff00;
+  --muted: #a0ada5;
+  --line: rgba(187,221,202,.14);
+  --serif: 'Instrument Serif',Georgia,serif;
+  --ease: cubic-bezier(.22,.68,0,1.02);
 }
+
 * {
   box-sizing: border-box;
 }
+
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 94px;
+  scroll-padding-top: 100px;
 }
+
 body {
   margin: 0;
   min-width: 320px;
 }
-body.nav-menu-open {
-  overflow: hidden;
-}
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 80;
-  opacity: 0.027;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='white' filter='url(%23n)' opacity='.6' d='M0 0h180v180H0z'/%3E%3C/svg%3E");
-}
-button,
-a,
-input,
-textarea {
-  -webkit-tap-highlight-color: transparent;
-}
-button,
-input,
-textarea {
+
+button,input,textarea {
   font: inherit;
 }
-button,
-a {
+
+button,a {
   color: inherit;
+  -webkit-tap-highlight-color: transparent;
 }
+
 button {
   cursor: pointer;
-}
-a {
-  text-decoration: none;
-}
-button {
   background: none;
   border: 0;
 }
-button:focus-visible,
-a:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 6px;
+
+a {
+  text-decoration: none;
 }
-input:focus-visible,
-textarea:focus-visible {
-  outline: 1px solid var(--accent);
-  outline-offset: 2px;
-}
-h1,
-h2,
-h3,
-h4,
-p {
+
+h1,h2,h3,h4,p {
   margin: 0;
 }
+
 img {
   display: block;
   max-width: 100%;
 }
+
 svg {
   flex-shrink: 0;
 }
-::selection {
-  color: #101410;
-  background: var(--accent);
+
+button:disabled {
+  cursor: default;
 }
+
+::selection {
+  background: var(--accent);
+  color: #020604;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 5px;
+}
+
+main:focus {
+  outline: none;
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 500;
+  top: 8px;
+  left: 8px;
+  background: var(--accent);
+  color: #020604;
+  padding: 12px;
+  transform: translateY(-150%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
 .reveal {
   opacity: 0;
-  transform: translateY(22px);
-  transition:
-    opacity 0.8s ease,
-    transform 0.8s cubic-bezier(0.2, 0.7, 0.3, 1);
+  transform: translateY(20px);
+  transition: opacity .8s ease,transform .8s var(--ease);
 }
+
 .reveal-visible {
   opacity: 1;
   transform: none;
 }
-.skip-link {
-  position: fixed;
-  top: 8px;
-  left: 8px;
-  z-index: 100;
-  background: var(--accent);
-  color: #101410;
-  padding: 12px;
-  transform: translateY(-150%);
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
 }
-.skip-link:focus {
-  transform: none;
-}
-@media (prefers-reduced-motion: reduce) {
+
+@media(prefers-reduced-motion:reduce) {
   html {
     scroll-behavior: auto;
   }
-  *,
-  *::before,
-  *::after {
-    animation: none !important;
-    transition: none !important;
+  *,*::before,*::after {
+    animation: none!important;
+    transition: none!important;
   }
   .reveal {
     opacity: 1;

@@ -1,88 +1,48 @@
-import { ArrowUpRight, X } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import './Nav.css'
-
-const LINKS = [
-  { href: '#profile', label: 'Profile' },
-  { href: '#stack', label: 'Stack' },
-  { href: '#work', label: 'Work' },
-]
-
-export default function Nav() {
-  const [scrolled, setScrolled] = useState(false)
-  const [menuOpen, setMenuOpen] = useState(false)
-
+import { ArrowRight, Menu, X } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { navLinks } from '../data/portfolio';
+import './Nav.css';
+export default function Nav({ onContact }) {
+  const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState('top');
+  const [open, setOpen] = useState(false);
+  const mobile = useRef(null);
+  const toggle = useRef(null);
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24)
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
-
+    const scroll = () => setScrolled(window.scrollY > 24);
+    scroll(); window.addEventListener('scroll', scroll, { passive: true });
+    const observer = new IntersectionObserver(entries => entries.forEach(e => {
+      if (e.isIntersecting) setActive(e.target.id === 'systems' ? 'work' : e.target.id);
+    }), { rootMargin: '-15% 0px -65% 0px' });
+    document.querySelectorAll('main > section[id]').forEach(el => observer.observe(el));
+    return () => { window.removeEventListener('scroll', scroll); observer.disconnect(); };
+  }, []);
   useEffect(() => {
-    document.body.classList.toggle('nav-menu-open', menuOpen)
-    return () => document.body.classList.remove('nav-menu-open')
-  }, [menuOpen])
-
-  const closeMenu = () => setMenuOpen(false)
-
-  return (
-    <>
-      <header className={`nav${scrolled ? ' nav-scrolled' : ''}`}>
-        <a className="nav-mark" href="#top">
-          NK<span className="nav-mark-dot">.</span>
-        </a>
-
-        <nav className="nav-links" aria-label="Primary">
-          {LINKS.map((link) => (
-            <a key={link.href} href={link.href}>
-              {link.label}
-            </a>
-          ))}
-        </nav>
-
-        <a className="nav-cta" href="#connect">
-          <span>Let&rsquo;s talk</span>
-          <ArrowUpRight size={15} aria-hidden="true" className="nav-cta-arrow" />
-        </a>
-
-        <button
-          type="button"
-          className={`nav-toggle${menuOpen ? ' nav-toggle-active' : ''}`}
-          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-          aria-expanded={menuOpen}
-          onClick={() => setMenuOpen((open) => !open)}
-        >
-          <span />
-          <span />
-        </button>
-      </header>
-
-      <div className={`nav-overlay${menuOpen ? ' nav-overlay-open' : ''}`}>
-        <button type="button" className="nav-overlay-close" aria-label="Close menu" onClick={closeMenu}>
-          <X size={22} aria-hidden="true" />
-        </button>
-        <nav className="nav-overlay-links" aria-label="Mobile">
-          {LINKS.map((link, i) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={closeMenu}
-              style={{ transitionDelay: menuOpen ? `${80 + i * 60}ms` : '0ms' }}
-            >
-              {link.label}
-            </a>
-          ))}
-          <a
-            href="#connect"
-            onClick={closeMenu}
-            className="nav-overlay-cta"
-            style={{ transitionDelay: menuOpen ? `${80 + LINKS.length * 60}ms` : '0ms' }}
-          >
-            Let&rsquo;s talk <ArrowUpRight size={18} aria-hidden="true" />
-          </a>
-        </nav>
-      </div>
-    </>
-  )
+    if (!open) return;
+    const el = mobile.current;
+    const trigger = toggle.current;
+    el.showModal();
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const desktop = matchMedia('(min-width: 761px)');
+    const resize = () => { if (desktop.matches) setOpen(false); };
+    desktop.addEventListener('change', resize);
+    return () => { el.close(); document.body.style.overflow = previousOverflow; trigger?.focus(); desktop.removeEventListener('change', resize); };
+  }, [open]);
+  return <>
+    <header className={`site-header${scrolled ? ' is-scrolled' : ''}`}>
+      <a className="wordmark" href="#top" aria-label="Nandu home">NK<span>.</span></a>
+      <span className="nav-tagline">Build. Deploy. Scale.</span>
+      <nav className="main-nav" aria-label="Primary navigation">
+        {navLinks.map(([id, label]) => <a key={id} href={`#${id}`} className={active === id ? 'active' : ''} aria-current={active === id ? 'location' : undefined}>{label}</a>)}
+      </nav>
+      <button className="button button-outline header-cta" onClick={onContact}>Let’s Talk <ArrowRight /></button>
+      <button ref={toggle} className="menu-toggle icon-button" aria-label="Open navigation" aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(true)}><Menu size={19} /></button>
+    </header>
+    <dialog ref={mobile} id="mobile-navigation" className="mobile-navigation" aria-label="Mobile navigation" onCancel={() => setOpen(false)}>
+      <div className="mobile-nav-top"><span className="wordmark">NK<span>.</span></span><button className="icon-button" aria-label="Close navigation" onClick={() => setOpen(false)}><X size={20} /></button></div>
+      <nav>{navLinks.map(([id, label], i) => <a href={`#${id}`} key={id} onClick={() => setOpen(false)}><span>0{i + 1}</span>{label}<ArrowRight size={22} /></a>)}</nav>
+      <p>FROM IDEAS TO WORKING SYSTEMS.</p>
+    </dialog>
+  </>;
 }

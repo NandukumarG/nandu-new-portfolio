@@ -64,7 +64,7 @@ export function GitIcon() {
 }
 
 export function GithubIcon() {
-  return <SiGithub size={20} color="#111111" />
+  return <SiGithub size={20} color="#d8ded9" />
 }
 
 export function PostmanIcon() {

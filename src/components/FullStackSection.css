@@ -1,0 +1,357 @@
+.full-stack-section {
+  background: linear-gradient(180deg,#030a07,#040d09);
+}
+
+.systems-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 25px;
+}
+
+.systems-heading>p {
+  font-size: 12px;
+  line-height: 1.9;
+  color: var(--muted);
+  padding-bottom: 3px;
+}
+
+.system-projects {
+  display: grid;
+  gap: 22px;
+  margin-top: 38px;
+}
+
+.system-project {
+  display: grid;
+  grid-template-columns: .95fr 1.25fr;
+  border-radius: 13px;
+  overflow: hidden;
+  padding: 30px 33px;
+  gap: 45px;
+  background: linear-gradient(115deg,#0d1c1370,#05100b);
+}
+
+.system-project-copy {
+  padding: 8px 0;
+}
+
+.system-kicker {
+  font-size: 8px;
+  letter-spacing: 1.7px;
+  color: #9aac9a;
+}
+
+.system-project-copy h3 {
+  font-size: 34px;
+  font-weight: 500;
+  letter-spacing: -1px;
+  margin: 18px 0 13px;
+}
+
+.system-project-copy h3>span {
+  color: var(--accent);
+}
+
+.system-project-copy>p {
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--muted);
+  max-width: 325px;
+}
+
+.system-project-copy .project-tags {
+  margin-top: 18px;
+}
+
+.system-features {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 17px;
+  margin: 20px 0 13px;
+  padding: 0;
+}
+
+.system-features li {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 9px;
+  color: #bdcabe;
+}
+
+.system-features svg {
+  color: #9ed27b;
+}
+
+.system-project-copy>.text-button {
+  font-size: 11px;
+  color: #d5e7c8;
+}
+
+.architecture {
+  margin: 0;
+  min-width: 0;
+  align-self: center;
+}
+
+.architecture-topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 7px;
+  letter-spacing: 1.2px;
+  color: #a3b7a6;
+  gap: 10px;
+}
+
+.architecture-topline>span:first-child {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.architecture-topline .status-dot {
+  width: 4px;
+  height: 4px;
+}
+
+.architecture-topline>span:last-child {
+  color: #83958a;
+  font-size: 6px;
+}
+
+.architecture-space {
+  height: 267px;
+  position: relative;
+  perspective: 1000px;
+  isolation: isolate;
+}
+
+.architecture-grid {
+  position: absolute;
+  inset: 25% -5% -5%;
+  background-image: linear-gradient(#a4de7910 1px,transparent 1px),linear-gradient(90deg,#a4de7910 1px,transparent 1px);
+  background-size: 27px 27px;
+  transform: rotateX(55deg) rotateZ(-13deg);
+  mask-image: radial-gradient(ellipse,#000 15%,transparent 70%);
+  z-index: -1;
+}
+
+.architecture-nodes {
+  position: absolute;
+  inset: 24px 5% 26px;
+  display: grid;
+  grid-template-areas: 'stage0 stage1' 'stage3 stage2';
+  grid-template-columns: 1fr 1fr;
+  gap: 50px 19%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  transform: perspective(900px) rotateX(8deg) rotateY(-7deg);
+  transition: transform .6s;
+}
+
+.architecture-space:hover .architecture-nodes {
+  transform: perspective(900px) rotateX(3deg) rotateY(-3deg);
+}
+
+.system-node {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  height: 85px;
+  text-align: left;
+  padding: 16px 11px;
+  border: 1px solid #91c77538;
+  border-radius: 8px;
+  background: linear-gradient(145deg,#17271c,#08110d);
+  box-shadow: 3px 6px 0 #020805,4px 7px 0 #8aab6327,0 14px 19px #0004;
+  transition: transform .4s,border-color .4s,background .4s;
+}
+
+.system-node.highlighted {
+  transform: translateY(-5px);
+  border-color: #b6ff00aa;
+  background: linear-gradient(145deg,#243c1c,#0a180f);
+}
+
+.node-icon {
+  color: #a6d175;
+  display: flex;
+  flex-shrink: 0;
+}
+
+.node-copy strong {
+  display: block;
+  font-weight: 500;
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.node-copy small {
+  display: block;
+  font-size: 8px;
+  color: #94a68b;
+  margin-top: 6px;
+  white-space: nowrap;
+}
+
+.node-index {
+  position: absolute;
+  right: 7px;
+  top: 6px;
+  font-size: 6px;
+  color: #abc39099;
+}
+
+.architecture-links {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke-width: 1;
+}
+
+.connection-base {
+  stroke: #6a9a414d;
+}
+
+.connection-flow {
+  stroke: #b6ff00;
+  stroke-dasharray: 5 520;
+  animation: data-flow 9s linear infinite;
+  opacity: .8;
+}
+
+.connection-arrow {
+  stroke: #a6cf6d;
+  stroke-width: 1;
+}
+
+.path-active .connection-base {
+  stroke: #b6ff0080;
+}
+
+.architecture figcaption {
+  min-height: 30px;
+  text-align: center;
+  font-size: 9px;
+  line-height: 1.7;
+  color: #91a495;
+  padding-inline: 8px;
+}
+
+@keyframes data-flow {
+  to {
+    stroke-dashoffset: -525;
+  }
+}
+
+@media(max-width:1050px) {
+  .system-project {
+    padding: 26px;
+    gap: 22px;
+    grid-template-columns: .9fr 1.2fr;
+  }
+  .system-node {
+    gap: 7px;
+    padding: 12px 8px;
+  }
+  .node-icon svg {
+    width: 19px;
+  }
+  .node-copy strong {
+    font-size: 9px;
+  }
+  .node-copy small {
+    font-size: 7px;
+  }
+  .architecture-nodes {
+    gap: 50px 14%;
+    inset-inline: 2%;
+  }
+  .architecture-topline {
+    font-size: 6px;
+    letter-spacing: .8px;
+  }
+  .architecture-topline>span:last-child {
+    display: none;
+  }
+  .systems-heading>p {
+    font-size: 11px;
+  }
+}
+
+@media(max-width:760px) {
+  .systems-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 19px;
+  }
+  .system-project {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 25px 20px;
+  }
+  .system-project-copy h3 {
+    font-size: 32px;
+  }
+  .system-project-copy>p {
+    max-width: 100%;
+  }
+  .architecture {
+    border-top: 1px solid var(--line);
+    padding-top: 22px;
+  }
+  .architecture-topline {
+    font-size: 7px;
+  }
+  .architecture-space {
+    height: 249px;
+  }
+  .architecture-nodes {
+    gap: 40px 16%;
+    inset: 22px 2% 20px;
+    transform: perspective(900px) rotateX(3deg) rotateY(-3deg);
+  }
+  .system-node {
+    height: 80px;
+    gap: 9px;
+  }
+  .node-copy strong {
+    font-size: 10px;
+  }
+  .node-copy small {
+    font-size: 8px;
+  }
+  .architecture figcaption {
+    font-size: 9px;
+  }
+  .system-projects {
+    gap: 24px;
+    margin-top: 28px;
+  }
+}
+
+@media(max-width:370px) {
+  .node-icon svg {
+    width: 17px;
+  }
+  .node-copy strong {
+    font-size: 8px;
+  }
+  .node-copy small {
+    font-size: 7px;
+  }
+  .system-node {
+    gap: 6px;
+  }
+  .architecture-nodes {
+    column-gap: 12%;
+  }
+}
