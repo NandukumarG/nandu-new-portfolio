@@ -20,7 +20,7 @@ export default function Portfolio() {
     <a className="skip-link" href="#main">Skip to content</a>
     <Nav onContact={() => setModal('contact')} />
     <main id="main" tabIndex={-1}>
-      <Hero /><Profile /><Tools /><Work onProject={setModal} suspended={Boolean(modal)} />
+      <Hero motionPaused={motionPaused} /><Profile /><Tools /><Work onProject={setModal} suspended={Boolean(modal)} />
       <FullStackSection onProject={setModal} />
       <Connect onContact={() => setModal('contact')} motionPaused={motionPaused} />
     </main>

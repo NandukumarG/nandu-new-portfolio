@@ -4,6 +4,17 @@ import { technologies } from '../data/portfolio';
 import './Tools.css';
 export default function Tools() {
   return <section id="stack" className="section stack-section">
+    <div className="stack-motion ambient" aria-hidden="true">
+      <div className="stack-motion-haze" /><div className="stack-motion-grid" />
+      <svg className="stack-circuits" viewBox="0 0 1440 780" preserveAspectRatio="xMidYMid slice">
+        <defs><linearGradient id="stack-circuit-fade"><stop stopColor="#86bbaa" stopOpacity="0" /><stop offset=".48" stopColor="#86bbaa" stopOpacity=".4" /><stop offset="1" stopColor="#b6ff00" stopOpacity=".04" /></linearGradient></defs>
+        {['M-80 630H310L430 510H870L1030 350H1510', 'M-40 710H450L565 595H920L1090 425H1490', 'M240 840V742L370 612V490L455 405H710L850 265H1450'].map((path, index) => <g key={path} style={{ '--circuit-delay': `${index * -7}s` }}>
+          <path className="stack-circuit-path" d={path} />
+          <path className="stack-circuit-pulse" pathLength="1000" d={path} />
+        </g>)}
+        {[[430,510],[870,510],[1030,350],[565,595],[920,595],[1090,425],[455,405],[850,265]].map(([cx,cy]) => <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r="3" className="stack-circuit-node" />)}
+      </svg>
+    </div>
     <div className="container">
       <Reveal className="section-topline section-label"><p className="eyebrow"><span className="section-number">02 /</span> TECH STACK</p><span className="section-aside">MODERN TOOLS. REAL POSSIBILITIES.</span></Reveal>
       <Reveal><h2>Technologies<br /><em>I work with.</em></h2></Reveal>

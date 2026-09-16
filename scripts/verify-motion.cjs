@@ -1,0 +1,127 @@
+const { chromium } = require('playwright');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const base = process.env.PORTFOLIO_URL || 'http://127.0.0.1:4173';
+
+(async () => {
+  fs.mkdirSync('artifacts', { recursive: true });
+  const browser = await chromium.launch();
+  try {
+    const page = await browser.newPage({ viewport: { width: 1440, height: 950 } });
+    const errors = [];
+    page.on('pageerror', error => errors.push(error.message));
+    await page.clock.install();
+    await page.goto(base, { waitUntil: 'networkidle' });
+    const orbit = page.locator('.hero-orbit-assembly');
+    const orbitBefore = await orbit.getAttribute('transform');
+    await page.clock.runFor(250);
+    assert.notEqual(await orbit.getAttribute('transform'), orbitBefore, 'The entire visible hero orbital assembly rotates');
+    await page.mouse.move(1100, 350);
+    await page.clock.runFor(500);
+    assert.notEqual(await page.locator('#top').evaluate(el => el.style.getPropertyValue('--hero-x')), '0.000px');
+    const headline = await page.locator('h1').boundingBox();
+    await page.mouse.move(400, 500);
+    await page.clock.runFor(500);
+    assert.deepEqual(await page.locator('h1').boundingBox(), headline, 'Parallax must leave typography stable');
+
+    const index = () => page.locator('.carousel-index').innerText();
+    const browse = async () => {
+      await page.locator('#work').evaluate(el => el.scrollIntoView({ block: 'center', behavior: 'instant' }));
+      await page.mouse.move(10, 10);
+      await page.evaluate(() => document.activeElement?.blur());
+      await page.waitForTimeout(150);
+    };
+    await browse();
+    assert.equal(await page.locator('.carousel-playback').count(), 0, 'Project browsing has no local play/pause button');
+    const stoppedOrbit = await orbit.getAttribute('transform');
+    await page.clock.fastForward(5600);
+    assert.match(await index(), /02.*05/s, 'Desktop autoplay advances after 5.5 seconds');
+    assert.equal(await orbit.getAttribute('transform'), stoppedOrbit, 'Offscreen hero stops rendering');
+    await page.locator('.carousel-card.is-active').hover();
+    const hoverIndex = await index();
+    await page.clock.fastForward(15000);
+    assert.equal(await index(), hoverIndex, 'Hover pauses autoplay');
+    await page.mouse.move(10, 10);
+    await page.clock.fastForward(1000);
+    assert.equal(await index(), hoverIndex, 'Autoplay never resumes immediately');
+    await page.clock.fastForward(5600);
+    assert.notEqual(await index(), hoverIndex, 'Autoplay resumes after hover ends');
+    await page.locator('.carousel-track').focus();
+    const focusIndex = await index();
+    await page.clock.fastForward(15000);
+    assert.equal(await index(), focusIndex, 'Keyboard focus pauses autoplay');
+    await page.keyboard.press('End');
+    assert.match(await index(), /05.*05/s);
+    await page.keyboard.press('ArrowRight');
+    assert.match(await index(), /01.*05/s, 'Keyboard navigation wraps');
+    await page.getByRole('button', { name: 'Show CivicMaps', exact: true }).click();
+    assert.match(await index(), /03.*05/s, 'Pagination selects the requested project');
+    await page.getByRole('button', { name: 'Explore CivicMaps concept', exact: true }).click();
+    await page.locator('dialog[open]').waitFor();
+    await page.clock.fastForward(20000);
+    assert.match(await index(), /03.*05/s, 'An open dialog suspends autoplay');
+    await page.keyboard.press('Escape');
+    await browse();
+    const dialogIndex = await index();
+    await page.clock.fastForward(1000);
+    assert.equal(await index(), dialogIndex, 'Closing a dialog allows a full reading interval before advancing');
+    await page.clock.fastForward(6600);
+    assert.notEqual(await index(), dialogIndex, 'Autoplay resumes after leaving the dialog and carousel');
+
+    await page.locator('#top').evaluate(el => el.scrollIntoView({ behavior: 'instant' }));
+    await page.waitForTimeout(150);
+    const offscreenIndex = await index();
+    await page.clock.fastForward(20000);
+    assert.equal(await index(), offscreenIndex, 'Offscreen carousel is paused');
+    await page.getByRole('button', { name: 'Pause motion', exact: true }).evaluate(el => el.click());
+    await browse();
+    await page.clock.fastForward(20000);
+    assert.equal(await index(), offscreenIndex, 'Global motion pause stops autoplay');
+    await page.getByRole('button', { name: 'Resume motion', exact: true }).evaluate(el => el.click());
+    await page.clock.runFor(50);
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    // Commit a browser paint to deliver media-query changes before advancing
+    // virtual timers (Chromium can defer the change event until the next paint).
+    await page.screenshot();
+    await page.clock.runFor(100);
+    assert.equal(await page.locator('.carousel-index').getAttribute('aria-live'), 'polite');
+    await page.clock.fastForward(20000);
+    assert.equal(await index(), offscreenIndex, 'Reduced motion disables autoplay');
+    await page.getByRole('button', { name: 'Next project', exact: true }).click();
+    assert.notEqual(await index(), offscreenIndex, 'Manual navigation still works with reduced motion');
+    await page.locator('#top').evaluate(el => el.scrollIntoView({ behavior: 'instant' }));
+    await page.waitForTimeout(100);
+    const reducedOrbit = await orbit.getAttribute('transform');
+    await page.clock.runFor(500);
+    assert.equal(await orbit.getAttribute('transform'), reducedOrbit, 'Reduced motion freezes the entire visible hero assembly');
+    await browse();
+    await page.locator('.carousel-card img').evaluateAll(images => Promise.all(images.map(img => img.decode())));
+    await page.locator('#work').screenshot({ path: 'artifacts/polished-projects-desktop.png' });
+    await page.setViewportSize({ width: 390, height: 844 });
+    await browse();
+    await page.locator('#work').screenshot({ path: 'artifacts/polished-projects-mobile.png' });
+
+    const mobile = await browser.newPage({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+    await mobile.clock.install();
+    await mobile.goto(base, { waitUntil: 'networkidle' });
+    await mobile.locator('#work').evaluate(el => el.scrollIntoView({ block: 'center', behavior: 'instant' }));
+    await mobile.waitForTimeout(150);
+    const mobileIndex = () => mobile.locator('.carousel-index').innerText();
+    await mobile.clock.fastForward(6000);
+    assert.match(await mobileIndex(), /01.*05/s, 'Mobile uses a longer reading interval');
+    await mobile.clock.fastForward(2200);
+    assert.match(await mobileIndex(), /02.*05/s, 'Mobile autoplay advances after eight seconds');
+    const box = await mobile.locator('.carousel-track').boundingBox();
+    const cdp = await mobile.context().newCDPSession(mobile);
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: 260, y: box.y + 120 }] });
+    await mobile.clock.fastForward(18000);
+    assert.match(await mobileIndex(), /02.*05/s, 'Holding a touch pauses autoplay');
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchCancel', touchPoints: [] });
+    await mobile.clock.fastForward(8200);
+    assert.match(await mobileIndex(), /03.*05/s, 'Cancelled touch releases autoplay');
+    assert.deepEqual(errors, []);
+    console.log('PASS: entire hero assembly rotation/parallax, stable typography, offscreen pause, desktop/mobile autoplay, arrows-only playback UI, hover/focus pause, delayed resume, pagination/wrap, modal suspension, global pause, reduced motion, and touch hold/cancel.');
+  } finally {
+    await browser.close();
+  }
+})().catch(error => { console.error(error); process.exitCode = 1; });

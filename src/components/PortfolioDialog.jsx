@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { X, Send, Check, Copy } from "lucide-react";
 import ProjectVisual from "./ProjectVisual";
 import ProjectPreview from "./ProjectPreview";
+import Button from './Button';
 import { contactEmail } from "../data/portfolio";
 export default function PortfolioDialog({ modal, onClose }) {
   const dialog = useRef(null);
@@ -51,13 +52,14 @@ export default function PortfolioDialog({ modal, onClose }) {
       }}
       aria-labelledby="dialog-title"
     >
-      <button
-        className="close-dialog icon-button"
+      <Button
+        variant="icon"
+        className="close-dialog"
         onClick={onClose}
         aria-label="Close dialog"
       >
         <X size={20} />
-      </button>
+      </Button>
       {isContact ? (
         <>
           <p className="eyebrow">A GOOD PLACE TO START</p>
@@ -103,7 +105,7 @@ export default function PortfolioDialog({ modal, onClose }) {
                 maxLength={5000}
               />
             </label>
-            <button className="button button-lime" type="submit">
+            <Button type="submit">
               {contactEmail
                 ? "Continue to email"
                 : copied
@@ -116,7 +118,7 @@ export default function PortfolioDialog({ modal, onClose }) {
               ) : (
                 <Copy size={16} />
               )}
-            </button>
+            </Button>
             <p className="form-note" role="status">
               {error ||
                 (contactEmail

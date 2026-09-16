@@ -31,6 +31,9 @@ const base = process.env.PORTFOLIO_URL || 'http://127.0.0.1:4173';
   assert.equal(await page.locator('.carousel-card').count(), 2);
   await page.getByRole('button', { name: 'Next project', exact: true }).click();
   const trigger = page.getByRole('button', { name: 'Explore Paper Weight concept', exact: true });
+  // Finish the coverflow transition before targeting a control on its moving
+  // face; browser hit-testing during perspective interpolation is asynchronous.
+  await page.locator('.carousel-card.is-active').evaluate(el => Promise.all(el.getAnimations({ subtree: true }).map(animation => animation.finished)));
   await trigger.click();
   await page.locator('dialog[open]').waitFor();
   assert.match(await page.locator('#dialog-title').innerText(), /Paper Weight/);
@@ -58,20 +61,20 @@ const base = process.env.PORTFOLIO_URL || 'http://127.0.0.1:4173';
   const node = page.locator('.system-node').first(); await node.focus();
   assert.match(await page.locator('.architecture figcaption').first().innerText(), /focused interface/);
   await page.locator('#connect').scrollIntoViewIfNeeded();
-  await page.locator('.earth-canvas').waitFor();
+  await page.locator('.earth-canvas[data-earth-ready="true"]').waitFor();
   await page.waitForTimeout(300);
-  const earthA = await page.locator('.earth-canvas').evaluate(c => c.toDataURL());
+  const earthA = await page.locator('.earth-canvas').getAttribute('data-earth-angle');
   await page.waitForTimeout(300);
-  assert.notEqual(await page.locator('.earth-canvas').evaluate(c => c.toDataURL()), earthA, 'Visible Earth must rotate');
+  assert.notEqual(await page.locator('.earth-canvas').getAttribute('data-earth-angle'), earthA, 'Visible Earth must rotate');
   await page.getByRole('button', { name: 'Pause motion', exact: true }).click();
-  const pausedA = await page.locator('.earth-canvas').evaluate(c => c.toDataURL());
+  const pausedA = await page.locator('.earth-canvas').getAttribute('data-earth-angle');
   await page.waitForTimeout(180);
-  assert.equal(await page.locator('.earth-canvas').evaluate(c => c.toDataURL()), pausedA, 'Pause motion must stop canvas');
+  assert.equal(await page.locator('.earth-canvas').getAttribute('data-earth-angle'), pausedA, 'Pause motion must stop canvas');
   await page.getByRole('button', { name: 'Resume motion', exact: true }).click();
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  const reducedA = await page.locator('.earth-canvas').evaluate(c => c.toDataURL());
+  const reducedA = await page.locator('.earth-canvas').getAttribute('data-earth-angle');
   await page.waitForTimeout(180);
-  assert.equal(await page.locator('.earth-canvas').evaluate(c => c.toDataURL()), reducedA, 'Reduced motion must stop canvas');
+  assert.equal(await page.locator('.earth-canvas').getAttribute('data-earth-angle'), reducedA, 'Reduced motion must stop canvas');
   await page.evaluate(() => { document.activeElement?.blur(); scrollTo(0,0); });
   await page.screenshot({ path: 'artifacts/desktop-full.png', fullPage: true });
   for (const width of [320, 390, 768, 1024, 1440]) {

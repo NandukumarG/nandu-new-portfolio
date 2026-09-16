@@ -1,6 +1,7 @@
 import { ArrowUpRight, ArrowRight, MessageSquare, MapPin, Code2 } from 'lucide-react';
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import Reveal from './Reveal';
+import Button from './Button';
 import { socialLinks } from '../data/portfolio';
 import './Connect.css';
 const EarthVisualization = lazy(() => import('./EarthVisualization'));
@@ -11,8 +12,8 @@ export default function Connect({ onContact, motionPaused }) {
   return <section id="connect" className="section contact-section">
     <div className="container"><Reveal className="eyebrow section-label"><span className="section-number">05 /</span> LET’S CONNECT</Reveal>
       <div className="contact-layout">
-        <Reveal className="contact-copy"><h2>Let’s build<br />something{' '}<br /><em>that matters.</em></h2><p>Have a project in mind?<br />I’d love to hear about it.</p><button className="button button-lime" onClick={onContact}>Start a conversation <ArrowRight /></button><span className="contact-location"><MapPin size={11} /> BASED IN INDIA. OPEN TO THE WORLD.</span></Reveal>
-        <div className="earth-host" ref={host} role="img" aria-label="Slowly rotating Earth with green continents, network nodes, and orbital connections">
+        <Reveal className="contact-copy"><h2>Let’s build<br />something{' '}<br /><em>that matters.</em></h2><p>Have a project in mind?<br />I’d love to hear about it.</p><Button magnetic onClick={onContact}>Start a conversation <ArrowRight /></Button><span className="contact-location"><MapPin size={11} /> BASED IN INDIA. OPEN TO THE WORLD.</span></Reveal>
+        <div className="earth-host" ref={host} role="group" aria-label="Slowly rotating Earth with blue oceans, satellite imagery, clouds, and orbital connections">
           <Suspense fallback={<div className="earth-fallback" />}>{loadEarth ? <EarthVisualization paused={motionPaused} /> : <div className="earth-fallback" />}</Suspense>
           <span className="earth-caption">Global ideas.<br /><em>Real solutions.</em></span>
         </div>

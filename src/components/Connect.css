@@ -65,6 +65,32 @@
   pointer-events: none;
 }
 
+.earth-canvas[data-earth-ready="false"] {
+  opacity: 0;
+}
+
+.earth-fallback.earth-fallback-textured {
+  background: radial-gradient(circle at 29% 28%,#b9e5ff12,#02081114 38%,#000b 78%),url('/textures/earth-daymap.jpg') 51% center / 220% 100%;
+  border-color: #71bdd26b;
+  box-shadow: -3px -2px 18px #60bfe12e,inset -20px -8px 32px #01070acc;
+}
+
+.earth-credit {
+  position: absolute;
+  bottom: 0;
+  left: 3%;
+  max-width: 45%;
+  color: #829c96;
+  font-size: 7px;
+  line-height: 1.6;
+  letter-spacing: .2px;
+  z-index: 1;
+}
+
+.earth-credit:hover {
+  color: #d2e9df;
+}
+
 .earth-caption {
   position: absolute;
   bottom: -5px;

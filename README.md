@@ -26,11 +26,13 @@ npm run lint
 
 The reference images in `src/reference/` define the composition. The hero uses a cleaned, generated version of the supplied artwork, with real HTML text and controls. No Three.js model is used in the hero.
 
-Local WebP assets keep the hero around 160 KB (60 KB mobile) and workstation illustration around 19 KB. Original source assets are preserved. Asset provenance and full generation prompts are in [docs/visual-assets.md](docs/visual-assets.md).
+Local WebP assets keep the hero landscape around 129 KB (50 KB mobile), its rotating orbital plate around 204 KB, and the workstation illustration around 19 KB. The small static moon uses the preserved original artwork. Original source assets are preserved. Asset provenance and generation prompts are in [docs/visual-assets.md](docs/visual-assets.md).
 
-The carousel uses CSS perspective with pointer drag, touch swipe, arrow buttons, direct slide selection, and Left/Right/Home/End keys. Inactive slides are inert and hidden from assistive technology. Project and contact dialogs use native modal focus handling.
+The carousel uses CSS perspective with a clear center card, solid faces and visible edges, tilted side cards, and two deeper background cards. It supports pointer drag, touch swipe, arrow buttons, direct slide selection, and Left/Right/Home/End keys. Desktop autoplay advances every 5.5 seconds; mobile uses 8 seconds. Hover, keyboard focus, held pointers, open dialogs, hidden tabs, and offscreen visibility pause it. A full reading interval (at least 6.5 seconds after interaction) precedes resuming. The local play/pause button is removed; the existing footer motion control can pause it indefinitely. Reduced motion disables autoplay and tilt while preserving manual controls. Inactive slides are inert and hidden from assistive technology; automatic changes do not trigger live announcements. Project and contact dialogs use native modal focus handling.
 
-The globe uses a small, lazily imported Canvas 2D renderer with a projected sphere, simplified decorative coastlines, network nodes, and three orbital bands. It caps pixel density and frame rate, pauses offscreen or when the tab is hidden, and respects reduced motion. It allocates no WebGL context. CSS ambient motion also pauses offscreen. A footer control pauses decorative motion.
+The hero artwork is separated into a stationary landscape and an orbital plate. The complete planet, moons, and rings rotate together around the main planet once every 120 seconds (160 on mobile). A foreground mask keeps the developer and rocks in front, and all typography stays stable. Existing motion hooks suspend this work offscreen, in hidden tabs, and for reduced motion. The Tech & Tools background has slow circuit pulses, a drifting grid, and soft atmospheric light. Shared buttons, project cards, and technology items use restrained glass highlights and reflections without adding a motion library.
+
+The contact globe uses the existing Three.js dependency with real day/night Earth imagery, independently moving clouds, directional light, blue atmosphere, and depth-occluded orbital bands. It completes a rotation in approximately 52 seconds and preserves its angle when paused. The renderer is split into lazy chunks, caps pixel density/frame rate, pauses offscreen or when the tab is hidden, and respects reduced motion. It disposes GPU resources and retains a textured CSS fallback when WebGL is unavailable. Free texture sources and license details are in [docs/earth-assets.md](docs/earth-assets.md), with attribution beside the globe. Architecture diagrams now include original isometric vector illustrations and a sequential data pulse. CSS ambient motion pauses offscreen. A footer control pauses decorative motion.
 
 ## Verification
 
@@ -40,6 +42,9 @@ A browser verification script is included in `scripts/verify-portfolio.cjs`. It 
 
 ```sh
 node scripts/verify-portfolio.cjs
+node scripts/verify-motion.cjs
 ```
 
 Checks cover section order, deferred globe loading, filters, carousel controls and drag, project dialogs and focus restoration, contact brief copying, architecture interactions, animation pause/reduced motion, mobile navigation, internal links, missing images, runtime errors, and overflow at 320, 390, 768, 1024, and 1440 pixels. Screenshots are saved under the ignored `artifacts/` folder. These checks are browser validation, not a measured 60 FPS guarantee on every device.
+
+The motion checks use Playwright’s controlled clock to verify whole-assembly hero rotation, desktop/mobile autoplay intervals, pause and delayed resume, focus and dialog suspension, global pause, offscreen behavior, reduced motion, touch hold/cancellation, and stationary hero typography during parallax.

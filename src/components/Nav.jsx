@@ -1,6 +1,7 @@
 import { ArrowRight, Menu, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { navLinks } from '../data/portfolio';
+import Button from './Button';
 import './Nav.css';
 export default function Nav({ onContact }) {
   const [scrolled, setScrolled] = useState(false);
@@ -36,11 +37,11 @@ export default function Nav({ onContact }) {
       <nav className="main-nav" aria-label="Primary navigation">
         {navLinks.map(([id, label]) => <a key={id} href={`#${id}`} className={active === id ? 'active' : ''} aria-current={active === id ? 'location' : undefined}>{label}</a>)}
       </nav>
-      <button className="button button-outline header-cta" onClick={onContact}>Let’s Talk <ArrowRight /></button>
-      <button ref={toggle} className="menu-toggle icon-button" aria-label="Open navigation" aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(true)}><Menu size={19} /></button>
+      <Button variant="outline" className="header-cta" onClick={onContact}>Let’s Talk <ArrowRight /></Button>
+      <Button variant="icon" ref={toggle} className="menu-toggle" aria-label="Open navigation" aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(true)}><Menu size={19} /></Button>
     </header>
     <dialog ref={mobile} id="mobile-navigation" className="mobile-navigation" aria-label="Mobile navigation" onCancel={() => setOpen(false)}>
-      <div className="mobile-nav-top"><span className="wordmark">NK<span>.</span></span><button className="icon-button" aria-label="Close navigation" onClick={() => setOpen(false)}><X size={20} /></button></div>
+      <div className="mobile-nav-top"><span className="wordmark">NK<span>.</span></span><Button variant="icon" aria-label="Close navigation" onClick={() => setOpen(false)}><X size={20} /></Button></div>
       <nav>{navLinks.map(([id, label], i) => <a href={`#${id}`} key={id} onClick={() => setOpen(false)}><span>0{i + 1}</span>{label}<ArrowRight size={22} /></a>)}</nav>
       <p>FROM IDEAS TO WORKING SYSTEMS.</p>
     </dialog>
