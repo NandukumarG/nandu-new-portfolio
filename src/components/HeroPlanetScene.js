@@ -1,7 +1,7 @@
 import {
   AdditiveBlending, AmbientLight, BufferGeometry, Color,
   DirectionalLight, Float32BufferAttribute, Group, LineBasicMaterial,
-  LineLoop, LoadingManager, Mesh, MeshStandardMaterial,
+  LineLoop, Mesh, MeshStandardMaterial,
   PerspectiveCamera, Points, PointsMaterial, Scene, ShaderMaterial,
   SphereGeometry, SRGBColorSpace, TextureLoader, Vector3, WebGLRenderer,
   CanvasTexture,
@@ -51,7 +51,7 @@ const atmosphereFragmentShader = `
   }
 `;
 
-export function createHeroPlanetScene(canvas, { mobile = false, onReady, onError } = {}) {
+export function createHeroPlanetScene(canvas, { mobile = false, onReady } = {}) {
   const context = canvas.getContext('webgl2', { alpha: true, antialias: !mobile, powerPreference: 'high-performance' })
     || canvas.getContext('webgl', { alpha: true, antialias: !mobile });
   if (!context) return null;
@@ -83,38 +83,30 @@ export function createHeroPlanetScene(canvas, { mobile = false, onReady, onError
   celestialGroup.position.set(mobile ? 0.1 : 1.38, mobile ? 0.55 : 0.35, 0);
   scene.add(celestialGroup);
 
-  // Textures and manager
+  // Textures load in the background; the scene renders immediately with
+  // plain materials and the Earth textures pop onto it once fetched, so
+  // there is never a static 2D placeholder blocking the live 3D view.
   const textures = new Set();
   let disposed = false;
-  let loaded = false;
 
-  const manager = new LoadingManager();
-  manager.onLoad = () => {
-    if (!disposed) {
-      loaded = true;
-      onReady?.();
-    }
-  };
-  manager.onError = (url) => {
-    console.warn('Hero texture fallback triggered for:', url);
-    onError?.(url);
-    if (!disposed && !loaded) {
-      loaded = true;
-      onReady?.();
-    }
-  };
-
-  const textureLoader = new TextureLoader(manager);
-  const loadTexture = (path) => {
-    const tex = textureLoader.load(path);
-    tex.colorSpace = SRGBColorSpace;
-    textures.add(tex);
-    return tex;
+  const textureLoader = new TextureLoader();
+  const applyTextureAsync = (path, apply) => {
+    textureLoader.load(
+      path,
+      (tex) => {
+        if (disposed) {
+          tex.dispose();
+          return;
+        }
+        tex.colorSpace = SRGBColorSpace;
+        textures.add(tex);
+        apply(tex);
+      },
+      undefined,
+      (err) => console.warn('Hero texture failed to load:', path, err)
+    );
   };
 
-  const dayTexture = loadTexture('/textures/earth-daymap.jpg');
-  const nightTexture = loadTexture('/textures/earth-nightmap.jpg');
-  const cloudsTexture = loadTexture('/textures/earth-clouds.jpg');
   const particleTex = createParticleTexture();
   textures.add(particleTex);
 
@@ -122,13 +114,19 @@ export function createHeroPlanetScene(canvas, { mobile = false, onReady, onError
   const planetRadius = mobile ? 0.95 : 1.18;
   const planetGeo = new SphereGeometry(planetRadius, mobile ? 48 : 64, mobile ? 48 : 64);
   const planetMat = new MeshStandardMaterial({
-    map: dayTexture,
     color: new Color(0xa7f3d0),
     roughness: 0.68,
     metalness: 0.14,
-    emissiveMap: nightTexture,
     emissive: new Color(0x38ef7d),
     emissiveIntensity: 1.35,
+  });
+  applyTextureAsync('/textures/earth-daymap.jpg', (tex) => {
+    planetMat.map = tex;
+    planetMat.needsUpdate = true;
+  });
+  applyTextureAsync('/textures/earth-nightmap.jpg', (tex) => {
+    planetMat.emissiveMap = tex;
+    planetMat.needsUpdate = true;
   });
   const planetMesh = new Mesh(planetGeo, planetMat);
   // Axial tilt (Earth-like 23.5 degrees)
@@ -138,12 +136,15 @@ export function createHeroPlanetScene(canvas, { mobile = false, onReady, onError
   // Atmospheric cloud layer
   const cloudsGeo = new SphereGeometry(planetRadius * 1.018, mobile ? 36 : 48, mobile ? 36 : 48);
   const cloudsMat = new MeshStandardMaterial({
-    alphaMap: cloudsTexture,
     transparent: true,
     opacity: 0.38,
     color: new Color(0xdcfce7),
     blending: AdditiveBlending,
     depthWrite: false,
+  });
+  applyTextureAsync('/textures/earth-clouds.jpg', (tex) => {
+    cloudsMat.alphaMap = tex;
+    cloudsMat.needsUpdate = true;
   });
   const cloudsMesh = new Mesh(cloudsGeo, cloudsMat);
   planetMesh.add(cloudsMesh);
@@ -408,6 +409,13 @@ export function createHeroPlanetScene(canvas, { mobile = false, onReady, onError
     });
     renderer.dispose();
   };
+
+  // Deferred to a microtask so the caller finishes assigning its scene
+  // reference before onReady fires — the scene is fully constructed and
+  // renderable synchronously; only the Earth textures arrive later.
+  queueMicrotask(() => {
+    if (!disposed) onReady?.();
+  });
 
   return { advance, render, resize, dispose };
 }

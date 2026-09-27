@@ -1,7 +1,7 @@
 import {
-  AdditiveBlending, AmbientLight, BackSide, BufferGeometry, Color,
-  DirectionalLight, Group, LineBasicMaterial, LineLoop, LoadingManager,
-  Mesh, MeshBasicMaterial, MeshPhongMaterial, PerspectiveCamera, Scene,
+  AdditiveBlending, BackSide, BufferGeometry, Color,
+  Group, LineBasicMaterial, LineLoop, LoadingManager,
+  Mesh, MeshBasicMaterial, PerspectiveCamera, Scene,
   ShaderMaterial, SphereGeometry, SRGBColorSpace, TextureLoader, Vector3,
   WebGLRenderer,
 } from 'three';
@@ -19,43 +19,57 @@ const vertexShader = `
   }
 `;
 
+// Holographic globe: no photo-real shading — a land-mask derived from the
+// day map glows against a graticule grid, rimmed with a Fresnel edge glow
+// and swept by a slow scanline, all in the site's lime/green accent tones.
 const surfaceShader = `
   uniform sampler2D dayMap;
-  uniform sampler2D nightMap;
-  uniform vec3 sunlight;
+  uniform vec3 glowColor;
+  uniform vec3 deepColor;
+  uniform float time;
   varying vec2 vUv;
   varying vec3 vWorldNormal;
   varying vec3 vWorldPosition;
+
+  float gridLine(float coord, float count) {
+    float cell = fract(coord * count);
+    float dist = min(cell, 1.0 - cell);
+    return 1.0 - smoothstep(0.0, 0.03, dist);
+  }
+
   void main() {
     vec3 normal = normalize(vWorldNormal);
     vec3 viewDirection = normalize(cameraPosition - vWorldPosition);
-    float light = dot(normal, sunlight);
-    float day = smoothstep(-0.16, 0.2, light);
+
     vec3 albedo = texture2D(dayMap, vUv).rgb;
-    vec3 cities = texture2D(nightMap, vUv).rgb;
-    vec3 color = albedo * (0.055 + 1.45 * pow(max(light, 0.0), 0.64));
-    color += cities * (1.0 - smoothstep(-0.2, 0.18, light)) * 1.6;
-    // Water reflects the sun softly; land remains matte.
-    float ocean = smoothstep(0.025, 0.16, albedo.b - albedo.r);
-    float specular = pow(max(dot(normal, normalize(sunlight + viewDirection)), 0.0), 55.0);
-    color += vec3(0.45, 0.65, 0.75) * specular * ocean * day * 0.45;
-    float edge = pow(1.0 - max(dot(normal, viewDirection), 0.0), 3.5);
-    color += vec3(0.08, 0.30, 0.50) * edge * (0.13 + day * 0.72);
-    gl_FragColor = vec4(color, 1.0);
+    float luminance = dot(albedo, vec3(0.299, 0.587, 0.114));
+    float landMask = smoothstep(0.16, 0.46, luminance);
+
+    float grid = max(gridLine(vUv.x, 36.0), gridLine(vUv.y, 18.0));
+    float fresnel = pow(1.0 - max(dot(normal, viewDirection), 0.0), 2.4);
+
+    float band = fract(time * 0.07);
+    float scan = smoothstep(0.05, 0.0, abs(vUv.y - band));
+
+    vec3 color = mix(deepColor, glowColor, landMask * 0.8 + grid * 0.3);
+    color += glowColor * fresnel * 0.85;
+    color += glowColor * scan * 0.5;
+
+    float alpha = 0.2 + landMask * 0.38 + grid * 0.22 + fresnel * 0.55 + scan * 0.3;
+    gl_FragColor = vec4(color, clamp(alpha, 0.0, 1.0));
     #include <colorspace_fragment>
   }
 `;
 
 const atmosphereShader = `
-  uniform vec3 sunlight;
+  uniform vec3 glowColor;
   varying vec3 vWorldNormal;
   varying vec3 vWorldPosition;
   void main() {
     vec3 normal = normalize(vWorldNormal);
     vec3 viewDirection = normalize(cameraPosition - vWorldPosition);
-    float rim = pow(max(0.0, 1.0 + dot(normal, viewDirection)), 4.5);
-    float lit = smoothstep(-0.45, 0.75, dot(normal, sunlight));
-    gl_FragColor = vec4(vec3(0.13, 0.48, 0.78), rim * (0.08 + lit * 0.28));
+    float rim = pow(max(0.0, 1.0 + dot(normal, viewDirection)), 3.2);
+    gl_FragColor = vec4(glowColor, rim * 0.35);
     #include <colorspace_fragment>
   }
 `;
@@ -76,28 +90,19 @@ export function createEarthScene(canvas, { mobile, onReady, onError }) {
   const scene = new Scene();
   const camera = new PerspectiveCamera(38, 1, .1, 20);
   camera.position.set(0, 0, 4.65);
-  const sunlight = new Vector3(-3.6, 2.4, 2.5).normalize();
-  const sun = new DirectionalLight(0xffffff, 2.1);
-  sun.position.copy(sunlight).multiplyScalar(5);
-  scene.add(new AmbientLight(0x7894b0, .35), sun);
+
   const textures = new Set();
   let disposed = false, failed = false;
   const manager = new LoadingManager();
   manager.onLoad = () => { if (!disposed && !failed) onReady(); };
   manager.onError = () => { failed = true; if (!disposed) onError(); };
   const loader = new TextureLoader(manager);
-  const load = (name, color = false) => {
-    const texture = loader.load(`/textures/earth-${name}.jpg`, loadedTexture => {
-      if (disposed) loadedTexture.dispose();
-    });
-    if (color) texture.colorSpace = SRGBColorSpace;
-    texture.anisotropy = Math.min(4, renderer.capabilities.getMaxAnisotropy());
-    textures.add(texture);
-    return texture;
-  };
-  const dayMap = load('daymap', true);
-  const nightMap = load('nightmap', true);
-  const cloudMap = load('clouds');
+  const dayMap = loader.load('/textures/earth-daymap.jpg', loadedTexture => {
+    if (disposed) loadedTexture.dispose();
+  });
+  dayMap.colorSpace = SRGBColorSpace;
+  dayMap.anisotropy = Math.min(4, renderer.capabilities.getMaxAnisotropy());
+  textures.add(dayMap);
 
   const axis = new Group();
   axis.rotation.z = .12;
@@ -106,19 +111,20 @@ export function createEarthScene(canvas, { mobile, onReady, onError }) {
   earth.rotation.y = -2;
   axis.add(earth);
   const sphereGeometry = new SphereGeometry(1, mobile ? 48 : 72, mobile ? 32 : 48);
-  earth.add(new Mesh(sphereGeometry, new ShaderMaterial({
+  const surfaceMaterial = new ShaderMaterial({
     vertexShader, fragmentShader: surfaceShader,
-    uniforms: { dayMap: { value: dayMap }, nightMap: { value: nightMap }, sunlight: { value: sunlight } },
-  })));
-  const clouds = new Mesh(sphereGeometry, new MeshPhongMaterial({
-    color: 0xf5f8ff, alphaMap: cloudMap, transparent: true, opacity: .64,
-    depthWrite: false, shininess: 2,
-  }));
-  clouds.scale.setScalar(1.012);
-  earth.add(clouds);
+    uniforms: {
+      dayMap: { value: dayMap },
+      glowColor: { value: new Color(0xa3e635) },
+      deepColor: { value: new Color(0x08130c) },
+      time: { value: 0 },
+    },
+    transparent: true, depthWrite: false,
+  });
+  earth.add(new Mesh(sphereGeometry, surfaceMaterial));
   const atmosphere = new Mesh(sphereGeometry, new ShaderMaterial({
     vertexShader, fragmentShader: atmosphereShader,
-    uniforms: { sunlight: { value: sunlight } },
+    uniforms: { glowColor: { value: new Color(0x4ade80) } },
     side: BackSide, transparent: true, blending: AdditiveBlending, depthWrite: false,
   }));
   atmosphere.scale.setScalar(1.045);
@@ -164,7 +170,7 @@ export function createEarthScene(canvas, { mobile, onReady, onError }) {
     advance: seconds => {
       elapsed += seconds;
       earth.rotation.y = -2 + elapsed * Math.PI * 2 / 52;
-      clouds.rotation.y = elapsed * .006;
+      surfaceMaterial.uniforms.time.value = elapsed;
       satellites.forEach(({ mesh, radius, phase }) => {
         const angle = phase + elapsed * .045;
         mesh.position.set(Math.cos(angle) * radius, 0, Math.sin(angle) * radius);

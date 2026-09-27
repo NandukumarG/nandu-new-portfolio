@@ -66,10 +66,6 @@ export default function HeroPlanet3D({ paused = false }) {
           setReady(true);
           sync();
         },
-        onError: () => {
-          if (isDisposed) return;
-          setReady(false);
-        },
       });
     } catch (e) {
       console.warn('Hero 3D planet fallback initialized:', e);
