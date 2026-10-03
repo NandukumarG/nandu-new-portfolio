@@ -21,7 +21,7 @@ const vertexShader = `
 
 // Holographic globe: no photo-real shading — a land-mask derived from the
 // day map glows against a graticule grid, rimmed with a Fresnel edge glow
-// and swept by a slow scanline, all in the site's lime/green accent tones.
+// and swept by a slow scanline in the site's blue accent tones.
 const surfaceShader = `
   uniform sampler2D dayMap;
   uniform vec3 glowColor;
@@ -115,8 +115,8 @@ export function createEarthScene(canvas, { mobile, onReady, onError }) {
     vertexShader, fragmentShader: surfaceShader,
     uniforms: {
       dayMap: { value: dayMap },
-      glowColor: { value: new Color(0xa3e635) },
-      deepColor: { value: new Color(0x08130c) },
+      glowColor: { value: new Color(0x60a5fa) },
+      deepColor: { value: new Color(0x08172b) },
       time: { value: 0 },
     },
     transparent: true, depthWrite: false,
@@ -124,14 +124,14 @@ export function createEarthScene(canvas, { mobile, onReady, onError }) {
   earth.add(new Mesh(sphereGeometry, surfaceMaterial));
   const atmosphere = new Mesh(sphereGeometry, new ShaderMaterial({
     vertexShader, fragmentShader: atmosphereShader,
-    uniforms: { glowColor: { value: new Color(0x4ade80) } },
+    uniforms: { glowColor: { value: new Color(0x3b82f6) } },
     side: BackSide, transparent: true, blending: AdditiveBlending, depthWrite: false,
   }));
   atmosphere.scale.setScalar(1.045);
   axis.add(atmosphere);
 
   const nodeGeometry = new SphereGeometry(.008, 8, 6);
-  const nodeMaterial = new MeshBasicMaterial({ color: new Color('#d7fbaa'), transparent: true, opacity: .8 });
+  const nodeMaterial = new MeshBasicMaterial({ color: new Color('#bfdbfe'), transparent: true, opacity: .8 });
   cityCoordinates.forEach(coordinates => {
     const node = new Mesh(nodeGeometry, nodeMaterial);
     node.position.copy(positionAt(...coordinates));
@@ -149,7 +149,7 @@ export function createEarthScene(canvas, { mobile, onReady, onError }) {
       return new Vector3(Math.cos(angle) * radius, 0, Math.sin(angle) * radius);
     });
     orbit.add(new LineLoop(new BufferGeometry().setFromPoints(points), new LineBasicMaterial({
-      color: 0xb1d571, transparent: true, opacity: index ? .2 : .34, depthWrite: false,
+      color: 0x60a5fa, transparent: true, opacity: index ? .2 : .34, depthWrite: false,
     })));
     const satellite = new Mesh(new SphereGeometry(.014, 10, 8), nodeMaterial);
     const phase = index * 2.8 + .5;

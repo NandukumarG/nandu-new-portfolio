@@ -11,7 +11,7 @@ export default function Hero({ motionPaused = false }) {
   const hero = useRef(null);
   useHeroParallax(hero);
 
-  const categories = ['Frontend', 'Backend', 'Database', 'Cloud', 'DevOps'];
+  const categories = ['Frontend', 'Backend', 'Cloud', 'DevOps', 'AI'];
 
   return (
     <section ref={hero} id="top" className="cinema-hero">
@@ -34,22 +34,19 @@ export default function Hero({ motionPaused = false }) {
       <div className="container hero-container">
         <div className="hero-copy">
           <p className="eyebrow">
-            <span className="status-dot" /> FULL STACK DEVELOPER
+            <span className="status-dot" /> FULL STACK DEVELOPER · DEVOPS
           </p>
           <h1>
-            Complex<br />
-            problems.<br />
-            <em>Elegant software.</em><br />
-            Real impact.
+            I build digital experiences<br />
+            that work beyond<br />
+            <em>the screen.</em>
           </h1>
           <p className="hero-description">
-            I’m Nandu. I build modern web applications,<br className="desktop-break" />
-            dependable backends, and cloud-ready systems.<br className="desktop-break" />
-            From the first idea to production.
+            I’m Nanda, a Full Stack Developer who enjoys building modern web applications and turning ideas into reliable, production-ready experiences. From creating interfaces and connecting APIs to deploying applications and automating workflows, I enjoy working across the complete development journey.
           </p>
           <div className="hero-actions">
             <Button href="#work" magnetic>View My Work <ArrowRight /></Button>
-            <Button variant="secondary" href="#connect">Let’s Connect</Button>
+            <Button variant="secondary" href="#connect">Let’s Connect <ArrowRight /></Button>
           </div>
           <div className="hero-stats">
             <div>

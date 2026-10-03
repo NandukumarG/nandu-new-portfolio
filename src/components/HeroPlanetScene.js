@@ -15,8 +15,8 @@ function createParticleTexture() {
   const ctx = canvas.getContext('2d');
   const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
   gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
-  gradient.addColorStop(0.2, 'rgba(182, 255, 0, 0.9)');
-  gradient.addColorStop(0.5, 'rgba(46, 204, 113, 0.4)');
+  gradient.addColorStop(0.2, 'rgba(96, 165, 250, 0.9)');
+  gradient.addColorStop(0.5, 'rgba(59, 130, 246, 0.4)');
   gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, 64, 64);
@@ -66,14 +66,14 @@ export function createHeroPlanetScene(canvas, { mobile = false, onReady } = {}) 
   camera.position.set(0, 0.2, 5.8);
 
   // Lighting
-  const ambientLight = new AmbientLight(0x163020, 0.85);
+  const ambientLight = new AmbientLight(0x172f50, 0.85);
   scene.add(ambientLight);
 
-  const mainLight = new DirectionalLight(0xdcf8c6, 2.2);
+  const mainLight = new DirectionalLight(0xdbeafe, 2.2);
   mainLight.position.set(-4, 3, 4);
   scene.add(mainLight);
 
-  const fillLight = new DirectionalLight(0x2ecc71, 1.0);
+  const fillLight = new DirectionalLight(0x3b82f6, 1.0);
   fillLight.position.set(4, -2, -3);
   scene.add(fillLight);
 
@@ -114,10 +114,10 @@ export function createHeroPlanetScene(canvas, { mobile = false, onReady } = {}) 
   const planetRadius = mobile ? 0.95 : 1.18;
   const planetGeo = new SphereGeometry(planetRadius, mobile ? 48 : 64, mobile ? 48 : 64);
   const planetMat = new MeshStandardMaterial({
-    color: new Color(0xa7f3d0),
+    color: new Color(0xbfdbfe),
     roughness: 0.68,
     metalness: 0.14,
-    emissive: new Color(0x38ef7d),
+    emissive: new Color(0x3b82f6),
     emissiveIntensity: 1.35,
   });
   applyTextureAsync('/textures/earth-daymap.jpg', (tex) => {
@@ -138,7 +138,7 @@ export function createHeroPlanetScene(canvas, { mobile = false, onReady } = {}) 
   const cloudsMat = new MeshStandardMaterial({
     transparent: true,
     opacity: 0.38,
-    color: new Color(0xdcfce7),
+    color: new Color(0xdbeafe),
     blending: AdditiveBlending,
     depthWrite: false,
   });
@@ -155,7 +155,7 @@ export function createHeroPlanetScene(canvas, { mobile = false, onReady } = {}) 
     vertexShader: atmosphereVertexShader,
     fragmentShader: atmosphereFragmentShader,
     uniforms: {
-      glowColor: { value: new Color(0x4ade80) },
+      glowColor: { value: new Color(0x60a5fa) },
       rimPower: { value: 3.5 },
     },
     transparent: true,
@@ -175,8 +175,8 @@ export function createHeroPlanetScene(canvas, { mobile = false, onReady } = {}) 
 
   // Generate 3 concentric particle rings with additive blending
   const ringsData = [
-    { inner: planetRadius * 1.45, outer: planetRadius * 1.95, count: mobile ? 450 : 750, speed: 0.28, color: 0xa3e635 },
-    { inner: planetRadius * 2.05, outer: planetRadius * 2.55, count: mobile ? 380 : 650, speed: -0.17, color: 0x4ade80 },
+    { inner: planetRadius * 1.45, outer: planetRadius * 1.95, count: mobile ? 450 : 750, speed: 0.28, color: 0x60a5fa },
+    { inner: planetRadius * 2.05, outer: planetRadius * 2.55, count: mobile ? 380 : 650, speed: -0.17, color: 0x3b82f6 },
     { inner: planetRadius * 2.65, outer: planetRadius * 3.15, count: mobile ? 280 : 500, speed: 0.12, color: 0x22d3ee },
   ];
 
@@ -221,7 +221,7 @@ export function createHeroPlanetScene(canvas, { mobile = false, onReady } = {}) 
   });
 
   // Glowing orbit lines
-  const createOrbitTrack = (radius, color = 0x4ade80, opacity = 0.22) => {
+  const createOrbitTrack = (radius, color = 0x60a5fa, opacity = 0.22) => {
     const points = [];
     const segments = 96;
     for (let i = 0; i <= segments; i++) {
@@ -235,8 +235,8 @@ export function createHeroPlanetScene(canvas, { mobile = false, onReady } = {}) 
     return loop;
   };
 
-  createOrbitTrack(planetRadius * 1.75, 0xa3e635, 0.24);
-  createOrbitTrack(planetRadius * 2.3, 0x4ade80, 0.20);
+  createOrbitTrack(planetRadius * 1.75, 0x60a5fa, 0.24);
+  createOrbitTrack(planetRadius * 2.3, 0x3b82f6, 0.20);
   createOrbitTrack(planetRadius * 2.95, 0x22d3ee, 0.16);
 
   // 3. Orbiting Celestial Elements (Moons & Cyber Data Beacons)
@@ -258,7 +258,7 @@ export function createHeroPlanetScene(canvas, { mobile = false, onReady } = {}) 
         })
       ),
     },
-    // Cyber Data Beacon: Glowing emerald relay node
+    // Cyber Data Beacon: Glowing blue relay node
     {
       radius: planetRadius * 1.75,
       speed: -0.44,
@@ -268,8 +268,8 @@ export function createHeroPlanetScene(canvas, { mobile = false, onReady } = {}) 
       mesh: new Mesh(
         new SphereGeometry(0.055, 20, 20),
         new MeshStandardMaterial({
-          color: new Color(0x86efac),
-          emissive: new Color(0x22c55e),
+          color: new Color(0x93c5fd),
+          emissive: new Color(0x3b82f6),
           emissiveIntensity: 2.2,
           roughness: 0.2,
         })
@@ -288,7 +288,7 @@ export function createHeroPlanetScene(canvas, { mobile = false, onReady } = {}) 
           color: new Color(0x64748b),
           roughness: 0.4,
           metalness: 0.8,
-          emissive: new Color(0x10b981),
+          emissive: new Color(0x2563eb),
           emissiveIntensity: 0.5,
         })
       ),
@@ -310,7 +310,7 @@ export function createHeroPlanetScene(canvas, { mobile = false, onReady } = {}) 
     starPositions[i * 3 + 1] = (Math.random() - 0.5) * 25;
     starPositions[i * 3 + 2] = -10 - Math.random() * 18;
 
-    const c = new Color().setHSL(0.35 + (Math.random() - 0.5) * 0.15, 0.7, 0.8 + Math.random() * 0.2);
+    const c = new Color().setHSL(0.59 + (Math.random() - 0.5) * 0.08, 0.7, 0.8 + Math.random() * 0.2);
     starColors[i * 3] = c.r;
     starColors[i * 3 + 1] = c.g;
     starColors[i * 3 + 2] = c.b;

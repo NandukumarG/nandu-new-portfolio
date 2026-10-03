@@ -1,5 +1,5 @@
 .contact-section {
-  background: radial-gradient(ellipse at 49% 54%,#0c251750,transparent 52%),#030a07;
+  background: radial-gradient(ellipse at 49% 54%,#10274750,transparent 52%),#030a12;
   padding-bottom: 76px;
 }
 
@@ -24,6 +24,10 @@
   line-height: 1.9;
   color: var(--muted);
   margin-top: 22px;
+}
+
+.contact-copy>p+p {
+  margin-top: 8px;
 }
 
 .contact-copy>.button {
@@ -71,11 +75,11 @@
 
 .earth-fallback.earth-fallback-textured {
   background:
-    repeating-linear-gradient(0deg,#a3e63522 0,#a3e63522 1px,transparent 1px,transparent 34px),
-    repeating-linear-gradient(90deg,#a3e63518 0,#a3e63518 1px,transparent 1px,transparent 34px),
-    radial-gradient(circle at 70% 30%,#3a5c2860,#08130c 45%,#020604 75%);
-  border-color: #a3e63555;
-  box-shadow: -3px -2px 18px #a3e6352e,inset -20px -8px 32px #01070acc;
+    repeating-linear-gradient(0deg,#60a5fa22 0,#60a5fa22 1px,transparent 1px,transparent 34px),
+    repeating-linear-gradient(90deg,#60a5fa18 0,#60a5fa18 1px,transparent 1px,transparent 34px),
+    radial-gradient(circle at 70% 30%,#1e4b7860,#08172b 45%,#02060c 75%);
+  border-color: #60a5fa55;
+  box-shadow: -3px -2px 18px #60a5fa2e,inset -20px -8px 32px #01070acc;
 }
 
 .earth-credit {
@@ -118,9 +122,9 @@
   left: 14%;
   top: 14%;
   border-radius: 50%;
-  border: 1px solid #b6ff0055;
-  background: radial-gradient(circle at 70% 30%,#2b4621,#08130c 45%,#020604 75%);
-  box-shadow: 3px -2px 16px #9adb3830;
+  border: 1px solid #60a5fa55;
+  background: radial-gradient(circle at 70% 30%,#1e4b78,#08172b 45%,#02060c 75%);
+  box-shadow: 3px -2px 16px #60a5fa30;
 }
 
 .contact-panel {
@@ -273,7 +277,7 @@
   .contact-copy h2 br:nth-child(2) {
     display: none;
   }
-  .contact-copy>p {
+  .contact-copy>p:first-of-type {
     margin-top: 20px;
   }
   .earth-host {

@@ -1,4 +1,4 @@
-# Nandu — Full Stack Developer Portfolio
+# Nanda Kumar — Full Stack Developer Portfolio
 
 A responsive React 19 + Vite portfolio with a near-black and lime visual system. The existing application, local fonts, icons, project concepts, and reference assets are preserved.
 

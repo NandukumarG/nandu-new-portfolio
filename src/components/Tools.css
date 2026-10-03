@@ -97,7 +97,7 @@
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   transition: transform .35s var(--ease),border-color .35s,box-shadow .35s;
-  flex: 1;
+  flex: 1 0 auto;
   white-space: nowrap;
 }
 

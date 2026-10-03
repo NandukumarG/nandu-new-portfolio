@@ -32,7 +32,7 @@ export default function Nav({ onContact }) {
   }, [open]);
   return <>
     <header className={`site-header${scrolled ? ' is-scrolled' : ''}`}>
-      <a className="wordmark" href="#top" aria-label="Nandu home">NK<span>.</span></a>
+      <a className="wordmark" href="#top" aria-label="Nanda Kumar home">NK<span>.</span></a>
       <span className="nav-tagline">Build. Deploy. Scale.</span>
       <nav className="main-nav" aria-label="Primary navigation">
         {navLinks.map(([id, label]) => <a key={id} href={`#${id}`} className={active === id ? 'active' : ''} aria-current={active === id ? 'location' : undefined}>{label}</a>)}

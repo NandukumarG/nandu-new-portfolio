@@ -39,7 +39,7 @@
   background-repeat: no-repeat;
   background-position: center;
   opacity: 0.85;
-  filter: drop-shadow(0 0 45px rgba(46, 204, 113, 0.25));
+  filter: hue-rotate(46deg) saturate(.82) drop-shadow(0 0 45px rgba(59, 130, 246, 0.3));
   animation: fallback-subtle-spin 120s linear infinite;
 }
 
@@ -61,7 +61,7 @@
   position: absolute;
   inset: 55% -2% -4%;
   opacity: .18;
-  background: radial-gradient(ellipse at 65% 82%, rgba(46, 204, 113, 0.16), transparent 56%);
+  background: radial-gradient(ellipse at 65% 82%, rgba(59, 130, 246, 0.18), transparent 56%);
   transform: translate3d(var(--hero-x, 0px), calc(var(--hero-y, 0px) * .8), 0);
 }
 

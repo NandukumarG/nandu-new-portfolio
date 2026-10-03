@@ -1,19 +1,36 @@
 import {
+  SiBootstrap,
+  SiClaude,
+  SiCss,
   SiDocker,
   SiFastapi,
+  SiFigma,
   SiGit,
   SiGithub,
+  SiGithubactions,
+  SiGithubcopilot,
+  SiGnubash,
+  SiHtml5,
+  SiJavascript,
+  SiJson,
   SiKubernetes,
+  SiLinux,
+  SiModelcontextprotocol,
   SiMongodb,
+  SiMysql,
   SiNginx,
+  SiNodedotjs,
+  SiNpm,
   SiPostgresql,
   SiPostman,
   SiPython,
   SiReact,
   SiTailwindcss,
   SiTypescript,
+  SiVercel,
   SiVite,
 } from 'react-icons/si'
+import { Webhook, Boxes, Layers, Infinity as InfinityLoop, Database, Orbit, ArrowRightLeft } from 'lucide-react'
 
 export function ReactIcon() {
   return <SiReact size={20} color="#61dafb" />
@@ -69,6 +86,101 @@ export function GithubIcon() {
 
 export function PostmanIcon() {
   return <SiPostman size={20} color="#ff6c37" />
+}
+
+export function JavaScriptIcon() {
+  return <SiJavascript size={20} color="#f7df1e" />
+}
+
+export function Html5Icon() {
+  return <SiHtml5 size={20} color="#e34f26" />
+}
+
+export function CssIcon() {
+  return <SiCss size={20} color="#4f8de0" />
+}
+
+export function BootstrapIcon() {
+  return <SiBootstrap size={20} color="#8c5ff0" />
+}
+
+export function NodeIcon() {
+  return <SiNodedotjs size={20} color="#5fa04e" />
+}
+
+export function JsonIcon() {
+  return <SiJson size={20} color="#d8ded9" />
+}
+
+export function MysqlIcon() {
+  return <SiMysql size={20} color="#4f8fc0" />
+}
+
+export function LinuxIcon() {
+  return <SiLinux size={20} color="#fcc624" />
+}
+
+export function GithubActionsIcon() {
+  return <SiGithubactions size={20} color="#2088ff" />
+}
+
+export function BashIcon() {
+  return <SiGnubash size={20} color="#4eaa25" />
+}
+
+export function NpmIcon() {
+  return <SiNpm size={20} color="#cb3837" />
+}
+
+export function FigmaIcon() {
+  return <SiFigma size={20} color="#f24e1e" />
+}
+
+export function CopilotIcon() {
+  return <SiGithubcopilot size={20} color="#d8ded9" />
+}
+
+export function ClaudeIcon() {
+  return <SiClaude size={20} color="#d97757" />
+}
+
+export function VercelIcon() {
+  return <SiVercel size={20} color="#d8ded9" />
+}
+
+export function McpIcon() {
+  return <SiModelcontextprotocol size={20} color="#d8ded9" />
+}
+
+// Concepts without a brand mark use line icons in the site's muted green.
+const lineIcon = { size: 20, color: '#a9d8b4', strokeWidth: 1.6 }
+
+export function RestApiIcon() {
+  return <Webhook {...lineIcon} />
+}
+
+export function MicroservicesIcon() {
+  return <Boxes {...lineIcon} />
+}
+
+export function SqlIcon() {
+  return <Database {...lineIcon} />
+}
+
+export function CiCdIcon() {
+  return <InfinityLoop {...lineIcon} />
+}
+
+export function DockerComposeIcon() {
+  return <Layers {...lineIcon} color="#2496ed" />
+}
+
+export function AntigravityIcon() {
+  return <Orbit {...lineIcon} />
+}
+
+export function ConnectedToolsIcon() {
+  return <ArrowRightLeft {...lineIcon} />
 }
 
 // AWS and VS Code brand marks aren't in the simple-icons set (trademark

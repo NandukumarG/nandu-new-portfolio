@@ -1,5 +1,5 @@
 .work-section {
-  background: radial-gradient(ellipse at 50% 60%,#0e221455,transparent 65%),#030a07;
+  background: radial-gradient(ellipse at 50% 60%,#10274755,transparent 65%),#030a12;
   padding-bottom: 42px;
 }
 
@@ -16,6 +16,7 @@
 
 .work-filter {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   flex-shrink: 0;
 }
@@ -30,12 +31,12 @@
 }
 
 .work-filter button:hover {
-  border-color: #b6ff0070;
+  border-color: #60a5fa70;
 }
 
 .work-filter button.selected {
   background: var(--accent);
-  color: #0a1003;
+  color: #07111f;
   border-color: var(--accent);
 }
 
@@ -44,6 +45,7 @@
   color: var(--muted);
   margin-top: 17px;
   line-height: 1.7;
+  max-width: 560px;
 }
 
 .work-footnote {
@@ -68,7 +70,7 @@
     gap: 22px;
   }
   .work-filter button {
-    padding: 10px 21px;
+    padding: 10px 17px;
   }
 }
 

@@ -6,11 +6,13 @@ import Profile from './components/Profile';
 import Tools from './components/Tools';
 import Work from './components/Work';
 import FullStackSection from './components/FullStackSection';
+import PracticeSection from './components/PracticeSection';
 import Connect from './components/Connect';
 import Footer from './components/Footer';
 import Cursor from './components/Cursor';
 import { useAmbientMotion } from './hooks/useAmbientMotion';
 import { MotionContext } from './hooks/useMotion';
+import { practices } from './data/portfolio';
 const PortfolioDialog = lazy(() => import('./components/PortfolioDialog'));
 export default function Portfolio() {
   const [modal, setModal] = useState(null);
@@ -22,6 +24,7 @@ export default function Portfolio() {
     <main id="main" tabIndex={-1}>
       <Hero motionPaused={motionPaused} /><Profile /><Tools /><Work onProject={setModal} suspended={Boolean(modal)} />
       <FullStackSection onProject={setModal} />
+      {practices.map((practice, i) => <PracticeSection key={practice.id} number={i + 5} practice={practice} />)}
       <Connect onContact={() => setModal('contact')} motionPaused={motionPaused} />
     </main>
     <Footer motionPaused={motionPaused} onToggleMotion={() => setMotionPaused(v => !v)} />

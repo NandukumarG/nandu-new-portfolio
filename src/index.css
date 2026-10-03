@@ -1,17 +1,17 @@
 :root {
-  font-family: 'DM Sans',Arial,sans-serif;
-  color: #f3f5f2;
-  background: #020604;
+  font-family: 'DM Sans', Arial, sans-serif;
+  color: #F1F5F9;
+  background: #080F1C;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color-scheme: dark;
-  --accent: #b6ff00;
-  --muted: #a0ada5;
-  --line: rgba(187,221,202,.14);
-  --serif: 'Instrument Serif',Georgia,serif;
-  --ease: cubic-bezier(.22,.68,0,1.02);
+  --accent: #60A5FA;
+  --muted: #A6B5C9;
+  --line: #263B56;
+  --serif: 'Instrument Serif', Georgia, serif;
+  --ease: cubic-bezier(.22, .68, 0, 1.02);
 }
 
 * {

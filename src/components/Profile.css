@@ -18,6 +18,10 @@
   margin-top: 20px;
 }
 
+.about-copy>p+p {
+  margin-top: 12px;
+}
+
 .about-copy .text-button {
   margin-top: 13px;
   color: #d2e8bd;
