@@ -1,7 +1,10 @@
-const headlines = { 'form-studio': <>Considered spaces.<br />Extraordinary living.</>, 'field-notes': <>A slower<br />point of view.</>, 'civic-maps': <>A clearer view.<br />A stronger community.</>, 'trail-index': <>Take the<br />long way home.</> };
 export default function ProjectPreview({ project }) {
-  return <div className={`project-preview preview-${project.id}`}>
-    <div className="preview-browser" aria-hidden="true"><span><i /><i /><i /></span><span>{project.name.toUpperCase()} / DESIGN STUDY</span><span>↗</span></div>
-    {project.image ? <><img src={project.image} alt={project.alt} loading="lazy" decoding="async" width="900" height="600" draggable="false" /><div className="preview-content" aria-hidden="true"><span className="preview-brand">{project.name === 'Form Studio' ? 'FORM®' : project.name.toUpperCase()}</span><strong>{headlines[project.id]}</strong><small>AN EXPLORATION IN POSSIBILITY ↗</small></div></> : <div className="paper-art" role="img" aria-label="Paper Weight concept: editorial lettering with layered paper"><strong>Paper<br />Weight.</strong><div className="paper-sheets" aria-hidden="true"><i /><i /><i /></div><span>IDENTITY, WITH SUBSTANCE. / DESIGN CONCEPT</span></div>}
-  </div>;
+  const Preview = project.url ? 'a' : 'div';
+  return <Preview
+    className={`project-preview preview-${project.id}`}
+    {...(project.url ? { href: project.url, target: '_blank', rel: 'noopener noreferrer', 'aria-label': `Visit ${project.name} website in a new tab` } : {})}
+  >
+    <div className="preview-browser" aria-hidden="true"><span><i /><i /><i /></span><span>{project.name.toUpperCase()} / PROJECT</span><span>↗</span></div>
+    {project.image ? <><img src={project.image} alt={project.alt} loading="lazy" decoding="async" width="1200" height="560" draggable="false" /><div className="preview-content" aria-hidden="true"><span className="preview-brand">{project.name.toUpperCase()}</span>{project.headline && <strong>{project.headline}</strong>}<small>VIEW PROJECT ↗</small></div></> : <div className="paper-art" role="img" aria-label={`${project.name}: thumbnail coming soon`}><strong>{project.name}.</strong><div className="paper-sheets" aria-hidden="true"><i /><i /><i /></div><span>THUMBNAIL COMING SOON</span></div>}
+  </Preview>;
 }

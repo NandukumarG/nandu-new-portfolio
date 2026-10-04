@@ -17,16 +17,15 @@ npm run lint
 - `src/data/portfolio.js`: five existing frontend/interface concepts, five technology groups, capabilities, navigation, and optional contact links.
 - `src/data/systems.js`: the existing FieldOps and Launchpad concepts and architecture notes.
 - All seven entries remain explicitly labeled **concepts**. No live sites, personal profiles, shipped products, or extra projects have been invented to meet a target count.
-- The two systems panels show proposed architecture, not verified deployed infrastructure.
 - Copy `.env.example` to `.env.local` and fill in the real email, mobile number, GitHub, LinkedIn, and Reddit URLs. Unconfigured or invalid contact links stay hidden. Reference-image example details are not treated as real contact information.
 - The contact dialog opens an email draft when an email is configured. Otherwise it copies a project brief and clearly states that nothing was sent. There is no contact backend.
-- `src/components/` contains the existing section components, refactored carousel, shared project previews, lazy dialog, architecture panels, and contact globe. The earlier `Hero3D` and Three.js architecture implementation remain available, but the current page does not load them.
+- `src/components/` contains the existing section components, refactored carousel, shared project previews, lazy dialog, and contact globe.
 
 ## Visuals and motion
 
-The reference images in `src/reference/` define the composition. The hero uses a cleaned, generated version of the supplied artwork, with real HTML text and controls. No Three.js model is used in the hero.
+The hero uses real HTML text and controls over a background image.
 
-Local WebP assets keep the hero landscape around 129 KB (50 KB mobile), its rotating orbital plate around 204 KB, and the workstation illustration around 19 KB. The small static moon uses the preserved original artwork. Original source assets are preserved. Asset provenance and generation prompts are in [docs/visual-assets.md](docs/visual-assets.md).
+The local WebP orbital plate is around 204 KB. Asset provenance and generation prompts are in [docs/visual-assets.md](docs/visual-assets.md).
 
 The carousel uses CSS perspective with a clear center card, solid faces and visible edges, tilted side cards, and two deeper background cards. It supports pointer drag, touch swipe, arrow buttons, direct slide selection, and Left/Right/Home/End keys. Desktop autoplay advances every 5.5 seconds; mobile uses 8 seconds. Hover, keyboard focus, held pointers, open dialogs, hidden tabs, and offscreen visibility pause it. A full reading interval (at least 6.5 seconds after interaction) precedes resuming. The local play/pause button is removed; the existing footer motion control can pause it indefinitely. Reduced motion disables autoplay and tilt while preserving manual controls. Inactive slides are inert and hidden from assistive technology; automatic changes do not trigger live announcements. Project and contact dialogs use native modal focus handling.
 

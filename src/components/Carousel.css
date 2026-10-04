@@ -272,11 +272,14 @@
 }
 
 .project-preview {
+  display: block;
   height: 238px;
   position: relative;
   overflow: hidden;
   isolation: isolate;
   background: #0c1910;
+  color: inherit;
+  text-decoration: none;
 }
 
 .project-preview>img {
@@ -349,39 +352,11 @@
   margin-top: 14px;
 }
 
-.preview-field-notes .preview-content {
-  text-align: center;
-  align-items: center;
-}
 
-.preview-field-notes .preview-content>strong {
-  font-size: 47px;
-}
 
-.preview-trail-index .preview-content>strong {
-  font-family: inherit;
-  font-weight: 500;
-  font-size: 34px;
-  max-width: 200px;
-}
 
-.preview-civic-maps .preview-content>strong {
-  font-family: inherit;
-  font-weight: 500;
-  font-size: 30px;
-  max-width: 210px;
-}
 
-.preview-paper-weight {
-  background: #e4e1d6;
-  color: #242c23;
-}
 
-.preview-paper-weight .preview-browser {
-  background: #dedbcf;
-  color: #3f4939;
-  border-color: #49564230;
-}
 
 .paper-art {
   position: absolute;
@@ -502,9 +477,6 @@
   }
   .preview-content>strong {
     font-size: 32px;
-  }
-  .preview-field-notes .preview-content>strong {
-    font-size: 40px;
   }
 }
 

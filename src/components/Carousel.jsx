@@ -4,7 +4,7 @@ import { useElementActivity, useMediaQuery, useMotionDisabled } from '../hooks/u
 import Button from './Button';
 import ProjectPreview from './ProjectPreview';
 import './Carousel.css';
-export default function Carousel({ projects, onProject, suspended = false }) {
+export default function Carousel({ projects, suspended = false }) {
   const [active, setActive] = useState(0);
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
@@ -128,7 +128,7 @@ export default function Carousel({ projects, onProject, suspended = false }) {
           <span className="carousel-card-edge edge-right" aria-hidden="true" />
           <div className="carousel-card-face">
           <ProjectPreview project={project} />
-          <div className="carousel-card-body"><div className="project-meta"><span>{project.category}</span><span>CONCEPT / 0{i+1}</span></div><div className="project-title-row"><h3>{project.name}</h3><Button variant="icon" onClick={() => onProject(project)} aria-label={`Explore ${project.name} concept`}><ArrowUpRight size={18} /></Button></div><p>{project.description}</p><div className="project-card-bottom"><div className="project-tags">{project.tags.map(t => <span key={t}>{t}</span>)}</div><Button variant="text" onClick={() => onProject(project)}>View concept <ArrowUpRight size={13} /></Button></div></div>
+          <div className="carousel-card-body"><div className="project-meta"><span>{project.category}</span><span>LIVE PROJECT / 0{i+1}</span></div><div className="project-title-row"><h3>{project.name}</h3><Button variant="icon" href={project.url} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${project.name} website in a new tab`}><ArrowUpRight size={18} /></Button></div><p>{project.description}</p><div className="project-card-bottom"><div className="project-tags">{project.tags.map(t => <span key={t}>{t}</span>)}</div><Button variant="text" href={project.url} target="_blank" rel="noopener noreferrer">Visit website <ArrowUpRight size={13} /></Button></div></div>
           </div>
         </article>;
       })}

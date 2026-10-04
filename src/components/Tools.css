@@ -151,7 +151,7 @@
   right: -16%;
   top: -8%;
   object-fit: cover;
-  object-position: 68% center;
+  object-position: 74% center;
   opacity: .82;
   mask-image: linear-gradient(90deg,transparent,#000 24%,#000 82%,transparent),linear-gradient(0deg,transparent,#000 25%,#000 80%,transparent);
   mask-composite: intersect;

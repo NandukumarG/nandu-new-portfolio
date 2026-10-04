@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { X, Send, Check, Copy } from "lucide-react";
-import ProjectVisual from "./ProjectVisual";
 import ProjectPreview from "./ProjectPreview";
 import Button from './Button';
 import { contactEmail } from "../data/portfolio";
@@ -139,7 +138,7 @@ export default function PortfolioDialog({ modal, onClose }) {
             <span className="lime">.</span>
           </h2>
           <p className="dialog-intro">{modal.type}</p>
-          {modal.id === '01' || modal.id === '02' ? <ProjectVisual kind={modal.visual} /> : <ProjectPreview project={modal} />}
+          <ProjectPreview project={modal} />
           <div className="dialog-detail">
             <h3>The idea</h3>
             <p>{modal.challenge}</p>

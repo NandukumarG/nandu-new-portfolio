@@ -4,7 +4,7 @@ import HeroOrbit from './HeroOrbit';
 import Button from './Button';
 import { useHeroParallax } from '../hooks/useHeroParallax';
 import { staticProjects, technologies } from '../data/portfolio';
-import { fullStackProjects } from '../data/systems';
+import nanduHero from '../assets/nandu-hero.png';
 import './Hero.css';
 
 export default function Hero({ motionPaused = false }) {
@@ -17,8 +17,8 @@ export default function Hero({ motionPaused = false }) {
     <section ref={hero} id="top" className="cinema-hero">
       <div className="hero-atmosphere ambient" aria-hidden="true">
         <picture>
-          <source media="(max-width: 600px)" srcSet="/images/hero-scene-mobile-v2.webp" />
-          <img src="/images/hero-scene-v2.webp" alt="" fetchPriority="high" width="1774" height="887" />
+          <source media="(max-width: 600px)" srcSet={nanduHero} />
+          <img src={nanduHero} alt="" fetchPriority="high" width="1774" height="887" />
         </picture>
         <HeroOrbit paused={motionPaused} />
         <div className="hero-scrim" />
@@ -50,15 +50,15 @@ export default function Hero({ motionPaused = false }) {
           </div>
           <div className="hero-stats">
             <div>
-              <strong>{String(staticProjects.length + fullStackProjects.length).padStart(2, '0')}<span> /</span></strong>
+              <strong>{String(staticProjects.length).padStart(2, '0')}<span>/</span></strong>
               <span>Project concepts</span>
             </div>
             <div>
-              <strong>{technologies.reduce((n, group) => n + group.items.length, 0)}<span> +</span></strong>
+              <strong>{technologies.reduce((n, group) => n + group.items.length, 0)}<span>+</span></strong>
               <span>Technologies</span>
             </div>
             <div>
-              <strong>∞</strong>
+              <strong className="hero-stat-infinity">∞</strong>
               <span>Possibilities</span>
             </div>
           </div>

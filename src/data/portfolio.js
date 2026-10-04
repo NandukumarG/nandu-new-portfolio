@@ -1,6 +1,10 @@
 import { Lightbulb, BookOpen, Box, Users, Mail, Phone, MessageCircle } from 'lucide-react';
 import { FaGithub as Github, FaLinkedinIn as Linkedin } from 'react-icons/fa';
 import { ReactIcon, JavaScriptIcon, Html5Icon, CssIcon, BootstrapIcon, ViteIcon, NodeIcon, PythonIcon, RestApiIcon, MicroservicesIcon, JsonIcon, MysqlIcon, PostgresIcon, AwsIcon, DockerIcon, DockerComposeIcon, KubernetesIcon, NginxIcon, LinuxIcon, GithubActionsIcon, BashIcon, VsCodeIcon, GitIcon, GithubIcon, NpmIcon, FigmaIcon, CopilotIcon, ClaudeIcon, AntigravityIcon, PostmanIcon, VercelIcon, McpIcon, ConnectedToolsIcon } from '../components/icons';
+import fish3dImage from '../assets/fish-3d-thumb.webp';
+import bambooBazarImage from '../assets/bamboobazar-thumb.webp';
+import bachelorsDhobiImage from '../assets/bachelors-dhobi-thumb.webp';
+import animeImage from '../assets/24hrs-anime-thumb.webp';
 export const navLinks = [['top', 'Home'], ['about', 'About'], ['stack', 'Stack'], ['work', 'Work'], ['connect', 'Contact']];
 export const capabilities = [
   { Icon: Lightbulb, title: 'Problem Solver', copy: 'Break complexity into clear, useful solutions.' },
@@ -33,14 +37,27 @@ export const practices = [
   { id: 'approach', label: 'APPROACH', aside: 'UNDERSTAND → IMPROVE', heading: ['Think. Build.', 'Improve.'],
     steps: [['Understand', 'Define the problem first.'], ['Explore', 'Compare ideas and approaches.'], ['Build', 'Make the solution work.'], ['Test', 'Find gaps and failures.'], ['Improve', 'Refine quality and reliability.']] },
 ];
-// Existing concepts from Work.jsx, Carousel.jsx and Portfolio.jsx.
-// Imagery is illustrative; no live URLs or shipped-product claims are added.
 export const staticProjects = [
-  { id: 'form-studio', name: 'Form Studio', category: 'Web', description: 'Architecture for a more human tomorrow.', image: '/images/form-studio.webp', alt: 'Architecture surrounded by a quiet landscape', tags: ['React', 'Vite'], visual: 'studio', type: 'Space for a different perspective.', challenge: 'An architecture practice needs a digital presence that gives its work room to breathe. This visual concept translates the rhythm of an editorial publication to the web.', approach: 'Large imagery, a restrained type system, and responsive compositions put the work first. Motion supports orientation while respecting reduced-motion preferences.' },
-  { id: 'field-notes', name: 'Field Notes', category: 'Web', description: 'Stories from a more conscious world.', image: '/images/field-notes.webp', alt: 'Mountain lake landscape used in the Field Notes concept', tags: ['Editorial design', 'Responsive design'], type: 'Stories from a more conscious world.', challenge: 'An editorial website concept exploring stories from a more conscious world.', approach: 'The existing visual study pairs landscape imagery with a quiet editorial layout.' },
-  { id: 'civic-maps', name: 'CivicMaps', category: 'Full Stack', description: 'Data for stronger communities.', image: '/images/civic-maps.webp', alt: 'Landscape imagery used in the CivicMaps interface study', tags: ['React', 'FastAPI'], type: 'Data for stronger communities.', challenge: 'A sample project exploring how a clear interface can help people understand community data.', approach: 'The original project lists React and FastAPI. This preview presents its interface concept; a deployed service is not linked.' },
-  { id: 'trail-index', name: 'Trail Index', category: 'Web', description: 'A quiet catalog for slow travel.', image: '/images/trail-index.webp', alt: 'Forest landscape illustrating the Trail Index travel concept', tags: ['Web design', 'Responsive design'], type: 'A quiet catalog for slow travel.', challenge: 'A website concept for a quiet catalog of slow travel.', approach: 'A landscape-led visual direction adapted from the existing project concept and local image library.' },
-  { id: 'paper-weight', name: 'Paper Weight', category: 'UI/UX', description: 'Print-first branding, web-second.', tags: ['Branding', 'Web design'], type: 'Print-first branding, web-second.', challenge: 'An existing branding concept with a print-first, web-second point of view.', approach: 'An editorial typography study brings the original project idea into a responsive digital composition.' },
+  {
+    id: 'fish-3d', name: 'Fish 3D', category: 'Web', description: 'An immersive website built around a 3D fish experience.',
+    image: fish3dImage, alt: 'Fish 3D website homepage', headline: 'An immersive 3D experience', tags: ['3D', 'Interactive'],
+    url: 'https://fish3dwebsite.vercel.app/',
+  },
+  {
+    id: 'bamboo-bazar', name: 'BambooBazar', category: 'Web', description: 'A storefront for thoughtfully designed bamboo home goods.',
+    image: bambooBazarImage, alt: 'BambooBazar storefront homepage', headline: 'Natural living, online', tags: ['Storefront', 'E-commerce'],
+    url: 'https://bamboobazar.vercel.app/',
+  },
+  {
+    id: 'bachelors-dhobi', name: 'Bachelor’s Dhobi', category: 'Web', description: 'A laundry service website for convenient pickup and care.',
+    image: bachelorsDhobiImage, alt: 'Bachelor’s Dhobi laundry service homepage', headline: 'Laundry, made simpler', tags: ['Services', 'Booking'],
+    url: 'https://bachelors-dhobi-two.vercel.app/',
+  },
+  {
+    id: '24hrs-anime', name: '24hrs Anime', category: 'Web', description: 'An anime discovery experience for finding the next series to watch.',
+    image: animeImage, alt: '24hrs Anime discovery homepage', headline: 'Find your next obsession', tags: ['Anime', 'Discovery'],
+    url: 'https://24hrs-anime.vercel.app/',
+  },
 ];
 const email = import.meta.env.VITE_CONTACT_EMAIL?.trim() || '';
 export const contactEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : '';

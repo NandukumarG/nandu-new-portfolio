@@ -7,8 +7,6 @@ const base = process.env.PORTFOLIO_URL || 'http://127.0.0.1:5173';
     const page = await browser.newPage();
     await page.goto(base);
     for (const [input, output, width] of [
-      ['hero-scene-v2.png', 'hero-scene-v2.webp', 1774],
-      ['hero-scene-v2.png', 'hero-scene-mobile-v2.webp', 960],
       ['hero-orbital-system-v3.png', 'hero-orbital-system-v3.webp', 1536],
     ]) {
       const data = await page.evaluate(async ({ input, width }) => {

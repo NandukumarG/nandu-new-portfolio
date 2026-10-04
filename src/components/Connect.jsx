@@ -10,7 +10,7 @@ export default function Connect({ onContact, motionPaused }) {
   const [loadEarth, setLoadEarth] = useState(false);
   useEffect(() => { const observer = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setLoadEarth(true); observer.disconnect(); } }, { rootMargin: '250px' }); observer.observe(host.current); return () => observer.disconnect(); }, []);
   return <section id="connect" className="section contact-section">
-    <div className="container"><Reveal className="eyebrow section-label"><span className="section-number">10 /</span> LET’S CONNECT</Reveal>
+    <div className="container"><Reveal className="eyebrow section-label"><span className="section-number">09 /</span> LET’S CONNECT</Reveal>
       <div className="contact-layout">
         <Reveal className="contact-copy"><h2>Let’s build<br />something{' '}<br /><em>useful.</em></h2><p>Have an idea, a project, or a problem that needs solving?</p><p>I’m always interested in building, experimenting, and learning something new.</p><Button magnetic onClick={onContact}>Let’s Talk <ArrowRight /></Button><span className="contact-location"><MapPin size={11} /> BASED IN INDIA. OPEN TO THE WORLD.</span></Reveal>
         <div className="earth-host" ref={host} role="group" aria-label="Slowly rotating Earth with blue oceans, satellite imagery, clouds, and orbital connections">

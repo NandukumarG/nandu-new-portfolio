@@ -219,14 +219,11 @@
 }
 
 .wordmark {
-  font-size: 30px;
-  line-height: 1;
-  font-weight: 600;
-  letter-spacing: -2.5px;
-}
-
-.wordmark span {
-  color: var(--accent);
+  display: block;
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  flex: 0 0 auto;
 }
 
 .footer-brand p {

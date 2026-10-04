@@ -165,7 +165,8 @@
     display: grid;
   }
   .site-header .wordmark {
-    font-size: 27px;
+    width: 40px;
+    height: 40px;
   }
 }
 
