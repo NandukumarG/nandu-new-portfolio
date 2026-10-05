@@ -4,7 +4,7 @@ import { navLinks } from '../data/portfolio';
 import Button from './Button';
 import nanduLogo from '../assets/nandu-logo.png';
 import './Nav.css';
-export default function Nav({ onContact }) {
+export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState('top');
   const [open, setOpen] = useState(false);
@@ -38,7 +38,7 @@ export default function Nav({ onContact }) {
       <nav className="main-nav" aria-label="Primary navigation">
         {navLinks.map(([id, label]) => <a key={id} href={`#${id}`} className={active === id ? 'active' : ''} aria-current={active === id ? 'location' : undefined}>{label}</a>)}
       </nav>
-      <Button variant="outline" className="header-cta" onClick={onContact}>Let’s Talk <ArrowRight /></Button>
+      <a className="header-cta button button-outline" href="#connect">Let’s Talk <ArrowRight /></a>
       <Button variant="icon" ref={toggle} className="menu-toggle" aria-label="Open navigation" aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(true)}><Menu size={19} /></Button>
     </header>
     <dialog ref={mobile} id="mobile-navigation" className="mobile-navigation" aria-label="Mobile navigation" onCancel={() => setOpen(false)}>

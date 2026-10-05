@@ -37,12 +37,11 @@ export default function Hero({ motionPaused = false }) {
             <span className="status-dot" /> FULL STACK DEVELOPER · DEVOPS
           </p>
           <h1>
-            I build digital experiences<br />
-            that work beyond<br />
-            <em>the screen.</em>
+            I turn ideas into<br />
+            <em>products that run.</em>
           </h1>
           <p className="hero-description">
-            I’m Nanda, a Full Stack Developer who enjoys building modern web applications and turning ideas into reliable, production-ready experiences. From creating interfaces and connecting APIs to deploying applications and automating workflows, I enjoy working across the complete development journey.
+            I’m Nanda Kumar, a Full Stack Developer focused on building modern web applications and reliable infrastructure. From crafting frontend experiences and developing backend APIs to deploying applications, managing cloud infrastructure, and automating workflows, I enjoy taking products from an idea to something real, reliable, and ready to scale.
           </p>
           <div className="hero-actions">
             <Button href="#work" magnetic>View My Work <ArrowRight /></Button>
@@ -50,12 +49,12 @@ export default function Hero({ motionPaused = false }) {
           </div>
           <div className="hero-stats">
             <div>
-              <strong>{String(staticProjects.length).padStart(2, '0')}<span>/</span></strong>
-              <span>Project concepts</span>
+              <strong>2<span>+</span></strong>
+              <span>Years of experience</span>
             </div>
             <div>
-              <strong>{technologies.reduce((n, group) => n + group.items.length, 0)}<span>+</span></strong>
-              <span>Technologies</span>
+              <strong>4<span>+</span></strong>
+              <span>Projects</span>
             </div>
             <div>
               <strong className="hero-stat-infinity">∞</strong>

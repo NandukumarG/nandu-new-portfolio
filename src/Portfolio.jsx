@@ -19,11 +19,11 @@ export default function Portfolio() {
   useAmbientMotion(motionPaused);
   return <MotionContext.Provider value={motionPaused}><div className={`portfolio${motionPaused ? ' motion-paused' : ''}`}>
     <a className="skip-link" href="#main">Skip to content</a>
-    <Nav onContact={() => setModal('contact')} />
+    <Nav />
     <main id="main" tabIndex={-1}>
       <Hero motionPaused={motionPaused} /><Profile /><Tools /><Work suspended={Boolean(modal)} />
       {practices.map((practice, i) => <PracticeSection key={practice.id} number={i + 4} practice={practice} />)}
-      <Connect onContact={() => setModal('contact')} motionPaused={motionPaused} />
+      <Connect motionPaused={motionPaused} />
     </main>
     <Footer motionPaused={motionPaused} onToggleMotion={() => setMotionPaused(v => !v)} />
     <Cursor paused={motionPaused} />

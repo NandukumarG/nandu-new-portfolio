@@ -59,12 +59,16 @@ export const staticProjects = [
     url: 'https://24hrs-anime.vercel.app/',
   },
 ];
-const email = import.meta.env.VITE_CONTACT_EMAIL?.trim() || '';
+const name = 'Nanda Kumar G';
+const email = import.meta.env.VITE_CONTACT_EMAIL?.trim() || 'mr.nandu22197@gmail.com';
 export const contactEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : '';
-const phone = import.meta.env.VITE_CONTACT_PHONE?.trim() || '';
+const phone = import.meta.env.VITE_CONTACT_PHONE?.trim() || '+91 7795711896';
+const linkedinUrl = import.meta.env.VITE_LINKEDIN_URL?.trim() || 'https://www.linkedin.com/in/nanda-kumar-7220972b5';
 function profileUrl(value) { try { const url = new URL(value); return url.protocol === 'https:' ? url.href : ''; } catch { return ''; } }
 export const socialLinks = [
+  { Icon: Users, label: 'Name', value: name, href: '#' },
   { Icon: Phone, label: 'Mobile', value: phone, href: /^[+\d()\s-]{7,25}$/.test(phone) ? `tel:${phone.replace(/[^+\d]/g, '')}` : '' },
   { Icon: Mail, label: 'Email', value: contactEmail, href: contactEmail ? `mailto:${contactEmail}` : '' },
-  ...[['GitHub', Github, import.meta.env.VITE_GITHUB_URL], ['LinkedIn', Linkedin, import.meta.env.VITE_LINKEDIN_URL], ['Reddit', MessageCircle, import.meta.env.VITE_REDDIT_URL]].map(([label, Icon, value]) => ({ Icon, label, value: profileUrl(value).replace('https://', '').replace(/\/$/, ''), href: profileUrl(value) })),
-].filter(link => link.href);
+  { Icon: Linkedin, label: 'LinkedIn', value: profileUrl(linkedinUrl).replace('https://', '').replace(/\/$/, ''), href: profileUrl(linkedinUrl) },
+  ...[['GitHub', Github, import.meta.env.VITE_GITHUB_URL], ['Reddit', MessageCircle, import.meta.env.VITE_REDDIT_URL]].map(([label, Icon, value]) => ({ Icon, label, value: profileUrl(value)?.replace('https://', '').replace(/\/$/, ''), href: profileUrl(value) })),
+].filter(link => link.href && link.value);

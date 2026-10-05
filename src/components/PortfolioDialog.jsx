@@ -106,7 +106,7 @@ export default function PortfolioDialog({ modal, onClose }) {
             </label>
             <Button type="submit">
               {contactEmail
-                ? "Continue to email"
+                ? "Open email draft"
                 : copied
                   ? "Brief copied"
                   : "Copy project brief"}
@@ -121,7 +121,7 @@ export default function PortfolioDialog({ modal, onClose }) {
             <p className="form-note" role="status">
               {error ||
                 (contactEmail
-                  ? "Opens a draft in your email app. Review it there before sending."
+                  ? "Opens a draft in your email app. The message is sent only after you click Send from there."
                   : copied
                     ? "Your brief is ready to paste into an email or message. Nothing has been sent."
                     : "Contact details are being configured. Save your brief to share later.")}
