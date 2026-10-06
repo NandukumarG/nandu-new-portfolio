@@ -41,7 +41,7 @@ export default function Hero({ motionPaused = false }) {
             <em>products that run.</em>
           </h1>
           <p className="hero-description">
-            I’m Nanda Kumar, a Full Stack Developer focused on building modern web applications and reliable infrastructure. From crafting frontend experiences and developing backend APIs to deploying applications, managing cloud infrastructure, and automating workflows, I enjoy taking products from an idea to something real, reliable, and ready to scale.
+            I’m Nanda Kumar, a Full Stack Developer focused on building modern web applications and reliable infrastructure. From crafting frontend experiences and developing backend APIs to deploying applications, managing cloud infrastructure, and automating workflows with Claude Code as my AI pair programmer, I enjoy taking products from an idea to something real, reliable, and ready to scale.
           </p>
           <div className="hero-actions">
             <Button href="#work" magnetic>View My Work <ArrowRight /></Button>
