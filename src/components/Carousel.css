@@ -155,11 +155,25 @@
 
 .project-meta {
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  gap: 6px;
   font-size: 8px;
   text-transform: uppercase;
   letter-spacing: 1.2px;
   color: #9bad9f;
+}
+
+.project-meta .project-engagement {
+  padding: 3px 6px;
+  border: 1px solid #a3ca8552;
+  border-radius: 999px;
+  background: #a3ca8512;
+  color: var(--accent);
+  font-size: 6px;
+  font-weight: 700;
+  letter-spacing: .7px;
+  white-space: nowrap;
 }
 
 .project-meta>span:last-child {

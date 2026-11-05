@@ -56,7 +56,8 @@ export const staticProjects = [
   {
     id: '24hrs-anime', name: '24hrs Anime', category: 'Web', description: 'An anime discovery experience for finding the next series to watch.',
     image: animeImage, alt: '24hrs Anime discovery homepage', headline: 'Find your next obsession', tags: ['Anime', 'Discovery'],
-    url: 'https://24hrs-anime.vercel.app/',
+    engagement: 'Paid client · Freelance',
+    url: 'https://www.24hranimelist.com/',
   },
 ];
 const name = 'Nanda Kumar G';
